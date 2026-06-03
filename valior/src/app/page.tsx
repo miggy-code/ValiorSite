@@ -1,7 +1,7 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Servicios from "@/components/Servicios";
-import Distincion from "@/components/Distincion";
+import DistincionA from "@/components/DistincionA";
 import Proceso from "@/components/Proceso";
 import Nosotros from "@/components/Nosotros";
 import Contacto from "@/components/Contacto";
@@ -14,9 +14,9 @@ export default function Home() {
       <ScrollReveal />
       <Nav />
       <Hero />
-      <Servicios />
-      <Distincion />
       <Proceso />
+      <DistincionA />
+      <Servicios />
       <Nosotros />
       <Contacto />
       <Footer />

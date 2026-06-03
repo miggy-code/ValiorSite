@@ -36,7 +36,7 @@ export default function Servicios() {
     <section className="services" id="servicios">
       <div className="wrap">
         <div className="ed-head reveal">
-          <span className="ed-index">I</span>
+          <span className="ed-index">III</span>
           <div className="ed-htext">
             <span className="eyebrow">Servicios</span>
             <h2>

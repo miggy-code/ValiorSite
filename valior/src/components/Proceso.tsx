@@ -24,7 +24,7 @@ export default function Proceso() {
     <section className="process section-pad" id="proceso">
       <div className="wrap">
         <div className="ed-head reveal">
-          <span className="ed-index">III</span>
+          <span className="ed-index">I</span>
           <div className="ed-htext">
             <span className="eyebrow">Cómo trabajamos</span>
             <h2>
@@ -35,18 +35,13 @@ export default function Proceso() {
             </span>
           </div>
         </div>
-        <div className="proc-list">
-          <div className="proc-spine" />
+        <div className="proc-cols">
           {steps.map((step, i) => (
-            <div key={step.num} className={`proc-step reveal d${i + 1}`}>
-              <div className="proc-num">{step.num}</div>
-              <div className="proc-text">
-                <h3>
-                  <span className="pt-en">{step.en}</span>
-                  {step.title}
-                </h3>
-                <p>{step.desc}</p>
-              </div>
+            <div key={step.num} className={`proc-col reveal d${i + 1}`}>
+              <div className="proc-col-num">{step.num}</div>
+              <span className="proc-col-en">{step.en}</span>
+              <h3>{step.title}</h3>
+              <p>{step.desc}</p>
             </div>
           ))}
         </div>

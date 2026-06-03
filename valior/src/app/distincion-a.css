@@ -1,0 +1,127 @@
+/* ── Distincion Option A — Photo Split Layout ── */
+
+.da-split {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  min-height: clamp(520px, 70vh, 760px);
+}
+
+.da-photo {
+  position: relative;
+  overflow: hidden;
+}
+
+.da-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(74, 63, 53, 0) 40%,
+    rgba(86, 74, 61, 0.55) 100%
+  ),
+  linear-gradient(
+    to top,
+    rgba(74, 63, 53, 0.5) 0%,
+    transparent 50%
+  );
+  pointer-events: none;
+}
+
+.da-items {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--surface);
+  padding: 0 clamp(40px, 6vw, 80px);
+}
+
+.da-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 28px;
+  padding: clamp(22px, 2.8vw, 36px) 0;
+  border-bottom: 1px solid rgba(244, 238, 228, 0.1);
+  transition: background 0.25s ease;
+}
+
+.da-item:first-child {
+  border-top: 1px solid rgba(244, 238, 228, 0.1);
+}
+
+.da-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.da-num {
+  font-family: var(--font-cormorant);
+  font-style: italic;
+  font-size: clamp(36px, 4vw, 52px);
+  color: var(--gold-deep);
+  line-height: 1;
+  min-width: 44px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.da-rule {
+  width: 1px;
+  height: clamp(32px, 4vw, 48px);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--gold),
+    transparent
+  );
+  flex-shrink: 0;
+}
+
+.da-body h3 {
+  font-size: clamp(17px, 1.8vw, 22px);
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.da-body p {
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.65;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 1040px) {
+  .da-split {
+    grid-template-columns: 50% 50%;
+  }
+}
+
+@media (max-width: 860px) {
+  .da-split {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .da-photo {
+    height: 320px;
+  }
+
+  .da-items {
+    padding: clamp(32px, 5vw, 48px) clamp(24px, 5vw, 40px);
+  }
+}
+
+@media (max-width: 560px) {
+  .da-items {
+    padding: 28px 20px;
+  }
+
+  .da-item {
+    gap: 18px;
+  }
+
+  .da-num {
+    font-size: 30px;
+    min-width: 32px;
+  }
+}
