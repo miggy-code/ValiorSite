@@ -166,7 +166,7 @@ export default function Contacto() {
           </form>
         </div>
 
-        <div style={{ textAlign: "center", marginTop: "54px" }} className="reveal">
+        <div className="contact-cta reveal">
           <a
             href="https://wa.me/51999999999"
             target="_blank"

@@ -1,11 +1,20 @@
+import Image from "next/image";
+
 export default function Footer() {
   return (
     <footer className="site">
       <div className="wrap">
         <div className="footer-top">
           <div className="footer-brand">
-            <div className="fb-mark">VALIOR</div>
-            <p>Construimos patrimonio con visión, estrategia y confianza.</p>
+            <Image
+              className="fb-mark"
+              src="/logos/valior-logo-feature.png"
+              alt="Valior"
+              width={2172}
+              height={724}
+            />
+            <p className="fb-tagline">Construimos patrimonio con visión.</p>
+            <p>Estrategia, confianza y resultados.</p>
           </div>
           <div className="footer-mid">
             <span className="fm-label">Boutique</span>
@@ -43,7 +52,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="footer-bottom">
-          © 2025 Valior. Todos los derechos reservados.
+          © {new Date().getFullYear()} Valior. Todos los derechos reservados.
         </div>
       </div>
     </footer>

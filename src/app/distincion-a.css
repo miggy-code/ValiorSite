@@ -32,7 +32,6 @@
   flex-direction: column;
   justify-content: center;
   background: var(--surface);
-  padding: 0 clamp(40px, 6vw, 80px);
 }
 
 .da-item {
@@ -40,7 +39,7 @@
   flex-direction: row;
   align-items: center;
   gap: 28px;
-  padding: clamp(22px, 2.8vw, 36px) 0;
+  padding: clamp(22px, 2.8vw, 36px) clamp(40px, 6vw, 80px);
   border-bottom: 1px solid rgba(244, 238, 228, 0.1);
   transition: background 0.25s ease;
 }
@@ -106,18 +105,15 @@
     height: 320px;
   }
 
-  .da-items {
-    padding: clamp(32px, 5vw, 48px) clamp(24px, 5vw, 40px);
+  .da-item {
+    padding: clamp(22px, 2.8vw, 36px) clamp(24px, 5vw, 40px);
   }
 }
 
 @media (max-width: 560px) {
-  .da-items {
-    padding: 28px 20px;
-  }
-
   .da-item {
     gap: 18px;
+    padding: 20px 20px;
   }
 
   .da-num {

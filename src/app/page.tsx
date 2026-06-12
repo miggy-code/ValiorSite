@@ -18,6 +18,7 @@ export default function Home() {
       <DistincionA />
       <Servicios />
       <Nosotros />
+      <div className="section-ornament"><span className="dot" /></div>
       <Contacto />
       <Footer />
     </>
