@@ -16,13 +16,13 @@
   inset: 0;
   background: linear-gradient(
     to right,
-    rgba(74, 63, 53, 0) 40%,
-    rgba(86, 74, 61, 0.55) 100%
+    rgba(239, 233, 221, 0) 55%,
+    rgba(239, 233, 221, 0.45) 100%
   ),
   linear-gradient(
     to top,
-    rgba(74, 63, 53, 0.5) 0%,
-    transparent 50%
+    rgba(43, 38, 32, 0.16) 0%,
+    transparent 40%
   );
   pointer-events: none;
 }
@@ -39,17 +39,17 @@
   flex-direction: row;
   align-items: center;
   gap: 28px;
-  padding: clamp(22px, 2.8vw, 36px) clamp(40px, 6vw, 80px);
-  border-bottom: 1px solid rgba(244, 238, 228, 0.1);
+  padding: clamp(26px, 3.2vw, 42px) clamp(40px, 6vw, 80px);
+  border-bottom: 1px solid var(--line);
   transition: background 0.25s ease;
 }
 
 .da-item:first-child {
-  border-top: 1px solid rgba(244, 238, 228, 0.1);
+  border-top: 1px solid var(--line);
 }
 
 .da-item:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.45);
 }
 
 .da-num {

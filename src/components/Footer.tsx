@@ -1,18 +1,13 @@
-import Image from "next/image";
-
 export default function Footer() {
   return (
     <footer className="site">
       <div className="wrap">
         <div className="footer-top">
           <div className="footer-brand">
-            <Image
-              className="fb-mark"
-              src="/logos/valior-logo-feature.png"
-              alt="Valior"
-              width={2172}
-              height={724}
-            />
+            <div className="brand">
+              <span className="brand-name">Valior</span>
+              <span className="brand-sub">Boutique Inmobiliaria &amp; Consultoría Legal</span>
+            </div>
             <p className="fb-tagline">Construimos patrimonio con visión.</p>
             <p>Estrategia, confianza y resultados.</p>
           </div>
