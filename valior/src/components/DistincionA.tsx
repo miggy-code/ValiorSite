@@ -38,7 +38,7 @@ export default function DistincionA() {
             <h2>
               La diferencia está <em>en el detalle</em>.
             </h2>
-            <span className="sub-en">The Valior Difference</span>
+            <span className="sub-en">La diferencia Valior</span>
           </div>
         </div>
       </div>

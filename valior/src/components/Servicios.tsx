@@ -52,7 +52,7 @@ export default function Servicios() {
               <br />
               no un <em>catálogo</em>.
             </h2>
-            <span className="sub-en">What We Do — A Curated Selection</span>
+            <span className="sub-en">Lo que hacemos — Una selección curada</span>
           </div>
         </div>
       </div>

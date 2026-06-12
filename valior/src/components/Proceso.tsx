@@ -30,9 +30,7 @@ export default function Proceso() {
             <h2>
               Tres pasos hacia <em>tu patrimonio</em>.
             </h2>
-            <span className="sub-en">
-              How We Work — Three Steps to Your Legacy
-            </span>
+            <span className="sub-en">Nuestro proceso — De la consulta al cierre</span>
           </div>
         </div>
         <div className="proc-cols">

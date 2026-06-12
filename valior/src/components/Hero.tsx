@@ -44,7 +44,7 @@ export default function Hero() {
           con visión, <em>estrategia</em> y confianza.
         </h1>
         <div className="tagline-en hero-anim a2">
-          Real Estate &amp; Legal Advisory · Building Wealth with Vision
+          Inmobiliaria · Asesoría Legal · Construyendo patrimonio con visión
         </div>
         <div className="hero-ctas hero-anim a3">
           <button onClick={handleContact} className="btn btn-gold">
