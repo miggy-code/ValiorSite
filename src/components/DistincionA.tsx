@@ -2,25 +2,25 @@ import Image from "next/image";
 
 const items = [
   {
-    num: "I",
+    num: "01",
     title: "Conocimiento local profundo",
     desc: "Especialistas en el mercado limeño de lujo, distrito por distrito.",
     delay: "d1",
   },
   {
-    num: "II",
+    num: "02",
     title: "Asesoría legal incluida",
     desc: "Respaldo jurídico en cada operación, sin costos ni sorpresas.",
     delay: "d2",
   },
   {
-    num: "III",
+    num: "03",
     title: "Servicio boutique",
     desc: "Atención personalizada y directa, sin intermediarios.",
     delay: "d3",
   },
   {
-    num: "IV",
+    num: "04",
     title: "Alcance internacional",
     desc: "Experiencia con clientes extranjeros e inversores globales.",
     delay: "d4",

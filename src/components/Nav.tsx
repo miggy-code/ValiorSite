@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
@@ -41,14 +40,9 @@ export default function Nav() {
   return (
     <>
       <header className={`nav${scrolled ? " scrolled" : ""}`} id="nav">
-        <Link href="#top" className="brand-mark">
-          <Image
-            src="/logos/valior-logo-nav.png"
-            alt="Valior"
-            width={2172}
-            height={724}
-            priority
-          />
+        <Link href="#top" className="brand" aria-label="Valior — inicio">
+          <span className="brand-name">Valior</span>
+          <span className="brand-sub">Boutique Inmobiliaria &amp; Consultoría Legal</span>
         </Link>
         <nav className="nav-links">
           <Link href="#servicios" className={activeSection === "servicios" ? "active" : ""}>Servicios</Link>

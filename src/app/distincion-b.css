@@ -1,7 +1,7 @@
 .db-list {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid rgba(244, 238, 228, 0.1);
+  border-top: 1px solid var(--line);
 }
 
 .db-item {
@@ -10,12 +10,12 @@
   gap: clamp(32px, 5vw, 80px);
   align-items: center;
   padding: clamp(44px, 6vw, 80px) 0;
-  border-bottom: 1px solid rgba(244, 238, 228, 0.1);
+  border-bottom: 1px solid var(--line);
   transition: background var(--ease, cubic-bezier(0.22, 0.61, 0.36, 1)) 0.3s;
 }
 
 .db-item:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .db-num {
