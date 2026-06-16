@@ -18,6 +18,10 @@
   --espresso-deep: #2b251f;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   --maxw: 1280px;
+
+  /* Vertical rhythm — every content section shares these */
+  --section-y: clamp(80px, 9vw, 132px); /* top & bottom padding of a section */
+  --head-gap: clamp(40px, 5vw, 64px);   /* gap below the .ed-head heading block */
 }
 
 /* Dark anchor sections keep the espresso mood — scoped token overrides */
@@ -392,13 +396,13 @@ header.nav.scrolled .nav-toggle span { background: var(--ink); }
 
 /* SECTIONS */
 .section-pad {
-  padding-top: clamp(96px, 12vw, 180px);
-  padding-bottom: clamp(96px, 12vw, 180px);
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
 }
 
 .ed-head {
   display: grid; grid-template-columns: 92px 1fr; gap: 52px;
-  align-items: start; margin-bottom: clamp(56px, 8vw, 110px); max-width: 1000px;
+  align-items: start; margin-bottom: var(--head-gap); max-width: 1000px;
 }
 .ed-head .ed-index {
   font-family: var(--font-cormorant), Georgia, serif; font-style: italic;
@@ -411,7 +415,7 @@ header.nav.scrolled .nav-toggle span { background: var(--ink); }
 .ed-head .sub-en { margin-top: 30px; display: block; }
 
 /* SERVICIOS */
-.services { padding-top: clamp(8px, 1.5vw, 16px); padding-bottom: clamp(48px, 6vw, 96px); }
+.services { padding-top: var(--section-y); padding-bottom: var(--section-y); }
 
 .srv-panels {
   display: flex;
@@ -518,26 +522,6 @@ header.nav.scrolled .nav-toggle span { background: var(--ink); }
 .proc-cols {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  position: relative;
-}
-
-/* Connector line spanning the numeral row — runs at ~80px from top of proc-cols */
-.proc-cols::before {
-  content: "";
-  position: absolute;
-  top: clamp(72px, 9vw, 104px); /* align with mid-point of the gold numerals */
-  left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    var(--gold) 12%,
-    var(--gold) 88%,
-    transparent 100%
-  );
-  opacity: 0.42;
-  pointer-events: none;
-  z-index: 0;
 }
 
 .proc-col {
@@ -569,26 +553,6 @@ header.nav.scrolled .nav-toggle span { background: var(--ink); }
 .proc-col + .proc-col::before { left: clamp(32px, 4vw, 56px); }
 
 .proc-col:hover::before { width: 64px; opacity: 1; }
-
-/* Node dot on connector line — centred at top of numeral */
-.proc-col::after {
-  content: "";
-  position: absolute;
-  top: calc(clamp(72px, 9vw, 104px) - 3px); /* centred on the connector line */
-  left: 0;
-  width: 6px; height: 6px;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  opacity: 0.48;
-  pointer-events: none;
-  z-index: 1;
-  transform: translateX(-50%);
-}
-
-.proc-col:first-child::after { left: 0; transform: none; }
-.proc-col:last-child::after { left: auto; right: 0; transform: none; }
-/* Middle column node — centred horizontally in the column */
-.proc-col:nth-child(2)::after { left: 50%; transform: translateX(-50%); }
 
 .proc-col-num {
   font-family: var(--font-cormorant), Georgia, serif;
@@ -796,32 +760,6 @@ footer.site::before {
   letter-spacing: 0.08em; color: rgba(247,243,238,0.42);
 }
 
-/* SECTION ORNAMENT */
-.section-ornament {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: clamp(24px, 3vw, 40px) 0;
-}
-.section-ornament::before,
-.section-ornament::after {
-  content: "";
-  width: 64px;
-  height: 1px;
-  background: linear-gradient(to var(--dir, right), var(--gold), transparent);
-  opacity: 0.4;
-}
-.section-ornament::before { --dir: right; }
-.section-ornament::after { --dir: left; }
-.section-ornament .dot {
-  width: 5px; height: 5px;
-  border: 1px solid var(--gold);
-  transform: rotate(45deg);
-  opacity: 0.55;
-  flex-shrink: 0;
-}
-
 /* RESPONSIVE */
 @media (max-width: 1040px) {
   .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 56px; }
@@ -842,9 +780,6 @@ footer.site::before {
   }
   .srv-watermark { display: none; }
   .proc-cols { grid-template-columns: 1fr; }
-  /* Hide the horizontal connector on single-column layout */
-  .proc-cols::before { display: none; }
-  .proc-col::after { display: none; }
   .proc-col {
     padding: clamp(40px, 6vw, 56px) 0 clamp(8px, 2vw, 16px);
   }
