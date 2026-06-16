@@ -29,8 +29,8 @@ export default function Hero() {
     <section className="hero" id="top" ref={heroRef}>
       <Image
         className="hero-img"
-        src="https://images.unsplash.com/photo-1589553666697-7243df84b113?q=80&w=2400&auto=format&fit=crop"
-        alt="Miraflores, Lima"
+        src="https://images.unsplash.com/photo-1668999814760-136075e8899a?q=80&w=2400&auto=format&fit=crop"
+        alt="Atardecer sobre la costa de Miraflores, Lima — Valior"
         fill
         priority
         style={{ objectFit: "cover" }}
@@ -39,12 +39,10 @@ export default function Hero() {
       <div className="hero-frame" />
       <div className="hero-content">
         <h1 className="hero-anim a1">
-          Construimos patrimonio
-          <br />
-          con visión, <em>estrategia</em> y confianza.
+          Construimos patrimonio <em>con visión</em>.
         </h1>
         <div className="tagline-en hero-anim a2">
-          Inmobiliaria · Asesoría Legal · Construyendo patrimonio con visión
+          Inmobiliaria · Asesoría Legal · Miraflores, Lima
         </div>
         <div className="hero-ctas hero-anim a3">
           <button onClick={handleContact} className="btn btn-gold">

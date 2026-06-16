@@ -133,6 +133,7 @@ h1, h2, h3, h4 {
 
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
+  .hero-img { animation: none; transform: none; }
 }
 
 .btn {
@@ -328,13 +329,19 @@ header.nav.scrolled .nav-toggle span { background: var(--ink); }
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform-origin: center;
+  animation: heroZoom 24s var(--ease) both;
+}
+@keyframes heroZoom {
+  from { transform: scale(1.06); }
+  to   { transform: scale(1); }
 }
 .hero-overlay {
   position: absolute; inset: 0; z-index: 2; pointer-events: none;
   background:
-    radial-gradient(110% 70% at 74% 4%, rgba(218,152,29,0.12), transparent 50%),
-    radial-gradient(100% 82% at 50% 46%, rgba(20,16,11,0.5), transparent 60%),
-    linear-gradient(to bottom, rgba(20,16,11,0.5) 0%, rgba(20,16,11,0.38) 40%, rgba(18,14,9,0.56) 72%, rgba(13,10,6,0.82) 100%);
+    radial-gradient(115% 75% at 78% 6%, rgba(218,152,29,0.08), transparent 52%),
+    radial-gradient(120% 92% at 50% 50%, rgba(15,12,8,0.16), rgba(10,7,4,0.52) 78%),
+    linear-gradient(to bottom, rgba(15,12,8,0.30) 0%, rgba(15,12,8,0.10) 40%, rgba(12,9,5,0.52) 100%);
 }
 .hero-frame {
   position: absolute; inset: 26px; z-index: 3;
@@ -344,17 +351,17 @@ header.nav.scrolled .nav-toggle span { background: var(--ink); }
 .hero-content {
   position: relative; z-index: 4;
   text-align: center; color: #fff;
-  padding: 0 28px; max-width: 920px;
+  padding: 0 28px; max-width: 860px;
 }
 .hero h1 {
-  font-size: clamp(46px, 7.2vw, 104px); font-weight: 500; color: #fff;
-  margin-bottom: 28px; letter-spacing: 0.005em; line-height: 1.05;
+  font-size: clamp(44px, 6.6vw, 96px); font-weight: 500; color: #fff;
+  margin-bottom: 34px; letter-spacing: 0.005em; line-height: 1.12;
   text-shadow: 0 2px 30px rgba(0,0,0,0.45), 0 1px 4px rgba(0,0,0,0.3);
 }
 .hero h1 em { font-style: italic; color: #f3d8a3; font-weight: 500; }
 .hero .tagline-en {
   font-size: clamp(12px,1.4vw,15px); letter-spacing: 0.22em; text-transform: uppercase;
-  color: rgba(247,243,238,0.94); margin-bottom: 52px; font-weight: 400;
+  color: rgba(247,243,238,0.94); margin-bottom: 58px; font-weight: 400;
   text-shadow: 0 1px 16px rgba(0,0,0,0.6);
 }
 .hero-loc {
