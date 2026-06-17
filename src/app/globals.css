@@ -109,6 +109,15 @@ h1, h2, h3, h4 {
   opacity: 0.7;
   flex-shrink: 0;
 }
+/* Centered variant — symmetric rule on both sides (parent must center text) */
+.eyebrow-center::after {
+  content: "";
+  width: 52px;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.7;
+  flex-shrink: 0;
+}
 
 .sub-en {
   font-family: var(--font-jost), sans-serif;
@@ -583,51 +592,45 @@ header.nav.scrolled .nav-toggle span { background: var(--ink); }
 
 .proc-col p { font-size: 15.5px; color: var(--ink-soft); line-height: 1.8; }
 
-/* NOSOTROS */
-.about { background: var(--surface); }
+/* NOSOTROS — homepage teaser (full bios live on /nosotros) */
+.team-teaser {
+  /* eases out of the ivory Servicios section, then settles into the sand band */
+  background: linear-gradient(to bottom, var(--bg) 0%, var(--surface) 24%, var(--surface) 100%);
+}
+.tt-head { text-align: center; max-width: 660px; margin: 0 auto clamp(48px, 6vw, 78px); }
+.tt-head h2 { font-size: clamp(34px, 4.6vw, 62px); margin: 24px 0 22px; }
+.tt-head h2 em { font-style: italic; color: var(--gold-deep); }
+.tt-head p { font-size: 17px; color: var(--ink-soft); line-height: 1.8; max-width: 52ch; margin: 0 auto; }
 
-.about-grid {
-  display: grid; grid-template-columns: 1.05fr 0.95fr;
-  gap: clamp(64px, 8vw, 120px); align-items: center;
+.tt-people {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: clamp(22px, 4vw, 56px); max-width: 760px; margin: 0 auto;
 }
-.about-photo { position: relative; overflow: hidden; }
-.about-photo-img { width: 100%; height: 600px; object-fit: cover; display: block; transition: transform 1.2s var(--ease); }
-.about-photo:hover .about-photo-img { transform: scale(1.04); }
-.about-photo .frame-tag {
-  position: absolute; bottom: 28px; left: 28px; z-index: 4;
-  background: rgba(35,30,24,0.78); color: var(--cream); backdrop-filter: blur(4px);
-  padding: 12px 22px; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+.tt-person { text-decoration: none; display: flex; flex-direction: column; }
+.tt-photo {
+  position: relative; aspect-ratio: 4 / 5; overflow: hidden;
+  background: var(--taupe); margin-bottom: 22px;
 }
-.about-photo::after {
-  content: ""; position: absolute; top: -18px; right: -18px;
-  width: 130px; height: 130px;
-  border-top: 1px solid var(--gold); border-right: 1px solid var(--gold);
-  pointer-events: none; z-index: 4;
+.tt-photo img { transition: transform 1.1s var(--ease); }
+.tt-person:hover .tt-photo img { transform: scale(1.05); }
+.tt-photo::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(201,149,42,0); transition: box-shadow 0.5s var(--ease);
 }
-
-/* Balancing bottom-left corner accent */
-.about-photo::before {
-  content: ""; position: absolute; bottom: -18px; left: -18px;
-  width: 130px; height: 130px;
-  border-bottom: 1px solid var(--gold); border-left: 1px solid var(--gold);
-  pointer-events: none; z-index: 4;
+.tt-person:hover .tt-photo::after { box-shadow: inset 0 0 0 1px var(--gold); }
+.tt-name {
+  font-family: var(--font-cormorant), Georgia, serif; font-size: clamp(24px, 2.6vw, 32px);
+  font-weight: 500; color: var(--ink); line-height: 1.1;
+  transition: color 0.4s var(--ease);
 }
-.about-body h2 { font-size: clamp(34px, 4.2vw, 60px); margin: 24px 0 36px; }
-.about-body h2 em { font-style: italic; color: var(--gold-deep); }
-.about-body p { font-size: 16.5px; color: var(--ink-soft); margin-bottom: 26px; line-height: 1.85; }
-.about-body p strong { font-weight: 500; color: var(--ink); }
-.about-body p:first-of-type {
-  font-family: var(--font-cormorant), Georgia, serif;
-  font-size: clamp(21px, 2.2vw, 27px);
-  font-style: italic;
-  line-height: 1.55;
-  color: var(--ink);
-  margin-bottom: 32px;
+.tt-person:hover .tt-name { color: var(--gold-deep); }
+.tt-role {
+  font-family: var(--font-jost), sans-serif; font-size: 11.5px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted); margin-top: 8px;
 }
-.about-body p:first-of-type strong { font-weight: 600; }
-.about-sign { margin-top: 48px; display: flex; align-items: center; gap: 22px; padding-top: 32px; border-top: 1px solid var(--line); }
-.about-sign .sig { font-family: var(--font-cormorant), Georgia, serif; font-style: italic; font-size: 32px; color: var(--gold-deep); }
-.about-sign .role { font-size: 11.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); }
+.tt-cta { text-align: center; margin-top: clamp(44px, 6vw, 72px); }
+.tt-cta .btn span { transition: transform 0.4s var(--ease); display: inline-block; }
+.tt-cta .btn:hover span { transform: translateX(6px); }
 
 /* CONTACTO */
 .contact {
@@ -769,8 +772,7 @@ footer.site::before {
 
 /* RESPONSIVE */
 @media (max-width: 1040px) {
-  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 56px; }
-  .about-photo-img { height: 460px; }
+  .contact-grid { grid-template-columns: 1fr; gap: 56px; }
   .footer-top { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 860px) {

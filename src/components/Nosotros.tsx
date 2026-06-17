@@ -1,49 +1,56 @@
 import Image from "next/image";
+import Link from "next/link";
+
+const people = [
+  {
+    name: "Alessandra",
+    role: "Asesora Inmobiliaria",
+    img: "https://images.unsplash.com/photo-1767362828069-3a8c5324be53?q=80&w=1200&auto=format&fit=crop",
+    alt: "Alessandra, asesora inmobiliaria de Valior",
+  },
+  {
+    name: "María Gertrudis",
+    role: "Abogada · Respaldo Legal",
+    img: "https://images.unsplash.com/photo-1745962978493-26922b426899?q=80&w=1200&auto=format&fit=crop",
+    alt: "María Gertrudis, abogada y respaldo legal de Valior",
+  },
+];
 
 export default function Nosotros() {
   return (
-    <section className="about section-pad" id="nosotros">
+    <section className="team-teaser section-pad" id="nosotros">
       <div className="wrap">
-        <div className="about-grid">
-          <div className="about-photo reveal">
-            <Image
-              className="about-photo-img"
-              src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=1400&auto=format&fit=crop"
-              alt="Interior refinado — Valior Miraflores"
-              width={700}
-              height={600}
-              loading="lazy"
-              style={{ width: "100%", height: "600px", objectFit: "cover" }}
-            />
-            <div className="frame-tag">Valior · Miraflores</div>
-          </div>
-          <div className="about-body reveal d1">
-            <span className="eyebrow">Nosotros</span>
-            <h2>
-              Expertas en el Lima <em>que pocos conocen</em>.
-            </h2>
-            <p>
-              Conocemos Miraflores y los distritos que la rodean como solo quien
-              vive y trabaja aquí puede conocerlos:{" "}
-              <strong>
-                la cuadra exacta, el edificio correcto, el momento oportuno.
-              </strong>
-            </p>
-            <p>
-              Trabajamos como una verdadera boutique — pocos clientes, total
-              dedicación. Atendemos en español e inglés, con la cercanía de un
-              asesor de confianza y la precisión de un equipo legal propio.
-            </p>
-            <p>
-              Porque cada operación lleva asesoría jurídica integrada, tú solo
-              te concentras en lo importante:{" "}
-              <strong>decidir con tranquilidad.</strong>
-            </p>
-            <div className="about-sign">
-              <span className="sig">Valior</span>
-              <span className="role">Inmobiliaria &amp; Consultoría Legal</span>
-            </div>
-          </div>
+        <div className="tt-head reveal">
+          <span className="eyebrow eyebrow-center">Nosotros</span>
+          <h2>
+            Una boutique <em>de dos generaciones</em>.
+          </h2>
+          <p>
+            Madre e hija, derecho e inmobiliaria, bajo un mismo techo. Conoce a
+            quienes están detrás de cada decisión en Valior.
+          </p>
+        </div>
+
+        <div className="tt-people">
+          {people.map((p, i) => (
+            <Link
+              href="/nosotros"
+              key={p.name}
+              className={`tt-person reveal d${i + 1}`}
+            >
+              <div className="tt-photo">
+                <Image src={p.img} alt={p.alt} fill loading="lazy" style={{ objectFit: "cover" }} />
+              </div>
+              <span className="tt-name">{p.name}</span>
+              <span className="tt-role">{p.role}</span>
+            </Link>
+          ))}
+        </div>
+
+        <div className="tt-cta reveal">
+          <Link href="/nosotros" className="btn btn-ghost-dark">
+            Conoce al equipo <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </div>
     </section>

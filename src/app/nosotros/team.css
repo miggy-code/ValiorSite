@@ -1,0 +1,284 @@
+/* ───────── NOSOTROS / TEAM PAGE ───────── */
+
+.team-page {
+  background: var(--bg);
+}
+
+/* HERO BANNER — gives the fixed nav a dark backdrop at the top of the page */
+.team-hero {
+  position: relative;
+  min-height: clamp(440px, 64vh, 640px);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+.team-hero-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.team-hero-ov {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(110% 80% at 78% 8%, rgba(218, 152, 29, 0.1), transparent 55%),
+    linear-gradient(to bottom, rgba(15, 12, 8, 0.55) 0%, rgba(15, 12, 8, 0.2) 38%, rgba(12, 9, 5, 0.78) 100%);
+}
+.team-hero-inner {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+  padding-top: 120px;
+  padding-bottom: clamp(48px, 7vw, 88px);
+}
+.team-hero-inner .eyebrow {
+  color: #e7c688;
+  margin-bottom: 24px;
+}
+.team-hero-inner .eyebrow::before {
+  background: #e7c688;
+  opacity: 0.8;
+}
+.team-hero h1 {
+  font-size: clamp(40px, 6vw, 84px);
+  color: #fff;
+  line-height: 1.06;
+  max-width: 14ch;
+  text-shadow: 0 2px 26px rgba(0, 0, 0, 0.45);
+}
+.team-hero h1 em {
+  font-style: italic;
+  color: #f3d8a3;
+}
+.team-hero-inner p {
+  margin-top: 26px;
+  max-width: 44ch;
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(18px, 2vw, 24px);
+  color: rgba(247, 243, 238, 0.9);
+  line-height: 1.55;
+}
+
+/* BIO BLOCKS */
+.bio-alt {
+  background: var(--surface);
+}
+.bio-grid {
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  gap: clamp(48px, 7vw, 104px);
+  align-items: center;
+}
+.bio-grid.reverse .bio-photo {
+  order: 2;
+}
+.bio-grid.reverse .bio-body {
+  order: 1;
+}
+
+.bio-photo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--taupe);
+}
+.bio-photo img {
+  transition: transform 1.2s var(--ease);
+}
+.bio-photo:hover img {
+  transform: scale(1.04);
+}
+/* Gold L-bracket corners — shared motif */
+.bio-photo::before,
+.bio-photo::after {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 120px;
+  pointer-events: none;
+  z-index: 3;
+}
+.bio-photo::before {
+  top: -16px;
+  left: -16px;
+  border-top: 1px solid var(--gold);
+  border-left: 1px solid var(--gold);
+}
+.bio-photo::after {
+  bottom: -16px;
+  right: -16px;
+  border-bottom: 1px solid var(--gold);
+  border-right: 1px solid var(--gold);
+}
+.bio-tag {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  z-index: 4;
+  background: rgba(35, 30, 24, 0.78);
+  color: var(--cream);
+  backdrop-filter: blur(4px);
+  padding: 11px 20px;
+  font-family: var(--font-jost), sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.bio-body .eyebrow {
+  margin-bottom: 22px;
+}
+.bio-body h2 {
+  font-size: clamp(40px, 5vw, 68px);
+  line-height: 1.04;
+  margin-bottom: 28px;
+}
+.bio-lede {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(20px, 2.1vw, 27px);
+  line-height: 1.5;
+  color: var(--ink);
+  margin-bottom: 28px;
+}
+.bio-body p {
+  font-size: 16px;
+  color: var(--ink-soft);
+  line-height: 1.85;
+  margin-bottom: 22px;
+}
+.bio-points {
+  list-style: none;
+  margin-top: 34px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+}
+.bio-points li {
+  position: relative;
+  padding-left: 26px;
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.bio-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 8px;
+  height: 1px;
+  background: var(--gold);
+}
+
+/* RESPALDO / GREAT TEAM */
+.respaldo {
+  background: var(--bg);
+}
+.respaldo-head {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto clamp(48px, 6vw, 80px);
+}
+.respaldo-head h2 {
+  font-size: clamp(34px, 4.4vw, 60px);
+  margin: 24px 0 24px;
+}
+.respaldo-head h2 em {
+  font-style: italic;
+  color: var(--gold-deep);
+}
+.respaldo-head p {
+  font-size: 17px;
+  color: var(--ink-soft);
+  line-height: 1.8;
+}
+.respaldo-points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+}
+.rp {
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+}
+.rp-num {
+  font-family: var(--font-cormorant), Georgia, serif;
+  font-style: italic;
+  font-size: clamp(36px, 4vw, 48px);
+  color: var(--gold);
+  opacity: 0.85;
+  display: block;
+  margin-bottom: 18px;
+}
+.rp h3 {
+  font-size: clamp(20px, 2.1vw, 25px);
+  margin-bottom: 12px;
+}
+.rp p {
+  font-size: 15px;
+  color: var(--ink-soft);
+  line-height: 1.75;
+}
+
+/* CTA BAND */
+.team-cta-band {
+  background: var(--espresso);
+  color: var(--cream);
+  text-align: center;
+  padding: clamp(80px, 10vw, 140px) 0;
+}
+.team-cta-band .eyebrow-center {
+  color: var(--gold);
+  justify-content: center;
+  margin-bottom: 24px;
+}
+.team-cta-band h2 {
+  font-size: clamp(36px, 5vw, 64px);
+  color: var(--cream);
+  margin-bottom: 40px;
+}
+.team-cta-band h2 em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+/* RESPONSIVE */
+@media (max-width: 940px) {
+  .bio-grid,
+  .bio-grid.reverse {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  /* Stack in DOM order on mobile: photo on top for both bios */
+  .bio-grid.reverse .bio-photo,
+  .bio-grid.reverse .bio-body {
+    order: 0;
+  }
+  .bio-photo {
+    aspect-ratio: 3 / 4;
+    max-width: 460px;
+  }
+  .respaldo-points {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .rp {
+    padding: 28px 0;
+  }
+  .rp + .rp {
+    border-top: 1px solid var(--line);
+  }
+}
+@media (max-width: 560px) {
+  .team-hero-inner {
+    padding-top: 104px;
+  }
+  .bio-photo {
+    max-width: none;
+  }
+}
