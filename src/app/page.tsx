@@ -1,10 +1,9 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
+import Statement from "@/components/Statement";
 import Servicios from "@/components/Servicios";
-import DistincionA from "@/components/DistincionA";
-import Proceso from "@/components/Proceso";
 import Nosotros from "@/components/Nosotros";
-import Contacto from "@/components/Contacto";
+import HomeCTA from "@/components/HomeCTA";
 import Footer from "@/components/Footer";
 import ScrollReveal from "@/components/ScrollReveal";
 
@@ -13,13 +12,13 @@ export default function Home() {
     <>
       <ScrollReveal />
       <Nav />
-      <Hero />
-      <Proceso />
-      <DistincionA />
-      <Servicios />
-      <Nosotros />
-      <div className="section-ornament"><span className="dot" /></div>
-      <Contacto />
+      <main className="home-main">
+        <Hero />
+        <Statement />
+        <Servicios />
+        <Nosotros />
+        <HomeCTA />
+      </main>
       <Footer />
     </>
   );

@@ -16,9 +16,15 @@ const jost = Jost({
 });
 
 export const metadata: Metadata = {
-  title: "Valior — Boutique Inmobiliaria & Consultoría Legal",
+  title: "Valior | Boutique Inmobiliaria & Consultoría Legal",
   description:
     "Construimos patrimonio con visión, estrategia y confianza. Especialistas en el mercado limeño de lujo.",
+  openGraph: {
+    title: "Valior | Boutique Inmobiliaria & Consultoría Legal",
+    description:
+      "Propiedades seleccionadas en Lima con estrategia inmobiliaria y respaldo legal integrado.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({

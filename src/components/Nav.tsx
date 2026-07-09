@@ -3,73 +3,50 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
-const SECTIONS = ["proceso", "distincion", "servicios", "nosotros", "contacto"];
-
-export default function Nav() {
-  const [scrolled, setScrolled] = useState(false);
+export default function Nav({ tone = "light" }: { tone?: "light" | "dark" }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener("scroll", onScroll, { passive: true });
+    const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    const elements = SECTIONS.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
-    elements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
   }, []);
 
   const closeMenu = () => setMenuOpen(false);
 
   return (
     <>
-      <header className={`nav${scrolled ? " scrolled" : ""}`} id="nav">
-        <Link href="#top" className="brand" aria-label="Valior — inicio">
-          <span className="brand-name">Valior</span>
-          <span className="brand-sub">Boutique Inmobiliaria &amp; Consultoría Legal</span>
+      <header
+        className={`nav${tone === "dark" ? " nav-dark" : ""}${scrolled ? " scrolled" : ""}`}
+      >
+        <Link href="/#top" className="brand-mark">
+          VALIOR
         </Link>
         <nav className="nav-links">
-          <Link href="#servicios" className={activeSection === "servicios" ? "active" : ""}>Servicios</Link>
-          <Link href="#distincion" className={activeSection === "distincion" ? "active" : ""}>Distinción</Link>
-          <Link href="#proceso" className={activeSection === "proceso" ? "active" : ""}>Proceso</Link>
-          <Link href="#nosotros" className={activeSection === "nosotros" ? "active" : ""}>Nosotros</Link>
-          <Link href="#contacto" className={`nav-cta${activeSection === "contacto" ? " active" : ""}`}>
+          <Link href="/#servicios">Servicios</Link>
+          <Link href="/nosotros">Nosotros</Link>
+          <Link href="/contacto" className="nav-cta">
             Contacto
           </Link>
         </nav>
         <button
-          className="nav-toggle"
+          className={`nav-toggle${menuOpen ? " open" : ""}`}
           aria-label="Menú"
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen((o) => !o)}
         >
-          <span />
           <span />
           <span />
         </button>
       </header>
 
       <div className={`mobile-nav${menuOpen ? " open" : ""}`}>
-        <Link href="#servicios" onClick={closeMenu}>Servicios</Link>
-        <Link href="#distincion" onClick={closeMenu}>Distinción</Link>
-        <Link href="#proceso" onClick={closeMenu}>Proceso</Link>
-        <Link href="#nosotros" onClick={closeMenu}>Nosotros</Link>
-        <Link href="#contacto" onClick={closeMenu}>Contacto</Link>
+        <Link href="/#servicios" onClick={closeMenu}>Servicios</Link>
+        <Link href="/nosotros" onClick={closeMenu}>Nosotros</Link>
+        <Link href="/contacto" onClick={closeMenu}>Contacto</Link>
+        <span className="mn-meta">Miraflores — Lima, Perú</span>
       </div>
     </>
   );

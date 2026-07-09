@@ -1,13 +1,5 @@
-"use client";
-
 import Image from "next/image";
-
-const WA_URL = "https://wa.me/51999999999";
-
-const handleContact = () => {
-  document.getElementById("contacto")?.scrollIntoView({ behavior: "smooth" });
-  window.open(WA_URL, "_blank", "noopener,noreferrer");
-};
+import Link from "next/link";
 
 const services = [
   {
@@ -52,7 +44,7 @@ export default function Servicios() {
               <br />
               no un <em>catálogo</em>.
             </h2>
-            <span className="sub-en">Lo que hacemos — Una selección curada</span>
+            <span className="sub-en">What We Do — A Curated Selection</span>
           </div>
         </div>
       </div>
@@ -79,9 +71,9 @@ export default function Servicios() {
                 </div>
                 <h3>{s.title}</h3>
                 <p>{s.desc}</p>
-                <button onClick={handleContact} className="srv-link">
+                <Link href="/contacto" className="srv-link">
                   Conversemos <span className="arr">→</span>
-                </button>
+                </Link>
               </div>
               <div className="srv-watermark" aria-hidden="true">{s.num}</div>
             </div>
