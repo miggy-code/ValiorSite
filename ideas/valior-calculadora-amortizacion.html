@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VALIOR · Calculadora de Amortización</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --espresso:#4a3f35; --cream:#f7f3ee; --taupe:#b8a99a; --gold:#c9952a;
+    --ink:#4a3f35; --muted:#8a7d6f; --line:#e4dcd1;
+    --surface:#ffffff; --surface-warm:#fbf8f4; --gold-soft:#f2e6cf; --taupe-soft:#ece5dd;
+    --shadow:0 1px 2px rgba(74,63,53,.04), 0 8px 30px rgba(74,63,53,.06);
+    --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{font-family:'Instrument Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);line-height:1.5;-webkit-font-smoothing:antialiased;padding:clamp(16px,4vw,48px)}
+  .wrap{max-width:1120px;margin:0 auto}
+
+  .masthead{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;flex-wrap:wrap;padding-bottom:22px;margin-bottom:28px;border-bottom:1px solid var(--line)}
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .wordmark{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(26px,4vw,34px);letter-spacing:.14em;color:var(--espresso);line-height:1}
+  .wordmark .dot{color:var(--gold)}
+  .brand small{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:500}
+  .masthead h1{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(18px,2.4vw,22px);color:var(--espresso);text-align:right;max-width:380px}
+  .masthead h1 em{color:var(--gold);font-style:italic}
+
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);gap:22px;align-items:start}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:clamp(20px,3vw,30px)}
+  .card + .card{margin-top:22px}
+  .eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .field{margin-bottom:22px}
+  .field:last-child{margin-bottom:0}
+  .field-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+  .field label{font-size:14px;font-weight:600;color:var(--espresso);display:flex;align-items:center;gap:7px}
+  .field .val{font-family:'Fraunces',serif;font-size:17px;color:var(--espresso);font-weight:500;white-space:nowrap}
+  .field .val.accent{color:var(--gold)}
+
+  .info{width:16px;height:16px;border-radius:50%;border:1px solid var(--taupe);color:var(--muted);font-size:10px;font-weight:700;line-height:14px;text-align:center;cursor:help;flex:none;position:relative;background:transparent;font-family:'Instrument Sans',sans-serif}
+  .info:hover,.info:focus{border-color:var(--gold);color:var(--gold);outline:none}
+  .info .tip{position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%);width:230px;background:var(--espresso);color:var(--cream);font-size:12px;font-weight:400;line-height:1.45;letter-spacing:0;text-transform:none;text-align:left;padding:11px 13px;border-radius:10px;opacity:0;visibility:hidden;transition:opacity .16s ease,transform .16s ease;z-index:20;box-shadow:0 10px 30px rgba(74,63,53,.28);pointer-events:none}
+  .info .tip::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--espresso)}
+  .info:hover .tip,.info:focus .tip{opacity:1;visibility:visible;transform:translateX(-50%) translateY(-2px)}
+  @media(max-width:520px){.info .tip{width:180px;left:auto;right:-6px;transform:none}.info .tip::after{left:auto;right:10px;transform:none}.info:hover .tip,.info:focus .tip{transform:translateY(-2px)}}
+
+  .input-shell{display:flex;align-items:center;border:1px solid var(--line);border-radius:11px;background:var(--surface-warm);transition:border-color .15s,box-shadow .15s;overflow:hidden}
+  .input-shell:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+  .input-shell .pre{padding:0 4px 0 14px;color:var(--muted);font-weight:600;font-size:15px}
+  .input-shell .post{padding:0 14px 0 4px;color:var(--muted);font-weight:600;font-size:14px}
+  .input-shell input{flex:1;border:none;background:transparent;outline:none;padding:13px 8px;font-family:'Instrument Sans',sans-serif;font-size:16px;font-weight:600;color:var(--espresso);width:100%;min-width:0}
+  .input-shell input::-webkit-outer-spin-button,.input-shell input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .input-shell input[type=number]{-moz-appearance:textfield}
+
+  .toggle{display:inline-flex;background:var(--taupe-soft);border-radius:10px;padding:3px;gap:3px}
+  .toggle button{border:none;background:transparent;cursor:pointer;padding:8px 16px;border-radius:8px;font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;color:var(--muted);transition:.15s}
+  .toggle button.on{background:var(--surface);color:var(--espresso);box-shadow:0 1px 3px rgba(74,63,53,.12)}
+
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:99px;outline:none;cursor:pointer;margin-top:4px}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--gold);border:3px solid var(--surface);box-shadow:0 1px 5px rgba(74,63,53,.28);transition:transform .12s}
+  input[type=range]::-webkit-slider-thumb:active{transform:scale(1.12)}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--gold);border:3px solid var(--surface);box-shadow:0 1px 5px rgba(74,63,53,.28);cursor:pointer}
+  .range-scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px}
+  .subnote{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.4}
+  .subnote b{color:var(--espresso);font-weight:600}
+
+  /* Extra-payment highlight field */
+  .extra-field{background:var(--gold-soft);border:1px solid #e8d3a6;border-radius:14px;padding:18px}
+  .extra-field .field-head{margin-bottom:12px}
+  .extra-field .valbig{font-family:'Fraunces',serif;font-size:24px;color:var(--espresso);font-weight:600}
+  .extra-field .valbig .cur{color:var(--gold);font-size:.7em;margin-right:3px}
+
+  /* ===== RESULT ===== */
+  .result-hero{background:linear-gradient(160deg,var(--espresso),#3a3129);color:var(--cream);border-radius:var(--radius);padding:clamp(24px,3.6vw,34px);position:relative;overflow:hidden}
+  .result-hero::after{content:"";position:absolute;right:-40px;top:-40px;width:190px;height:190px;background:radial-gradient(circle,rgba(201,149,42,.22),transparent 70%)}
+  .result-hero .lbl{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--taupe);font-weight:600;position:relative;z-index:1}
+  .saved{font-family:'Fraunces',serif;font-weight:500;line-height:1;margin:10px 0 6px;position:relative;z-index:1}
+  .saved .big{font-size:clamp(46px,9vw,72px);letter-spacing:-.01em}
+  .saved .u{font-size:clamp(20px,3.4vw,26px);color:var(--gold);margin:0 4px 0 3px}
+  .result-hero .fine{font-size:13.5px;color:var(--taupe);position:relative;z-index:1;line-height:1.5;max-width:440px}
+  .result-hero .fine b{color:var(--cream);font-weight:600}
+
+  /* comparison bars */
+  .cmp{margin-top:4px}
+  .cmprow{margin-bottom:16px}
+  .cmptop{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px;font-size:13px;color:var(--muted);font-weight:600}
+  .cmptop .yr{font-family:'Fraunces',serif;font-size:15px;color:var(--espresso);font-weight:500}
+  .cmptop .yr.gold{color:var(--gold)}
+  .bar{display:flex;height:20px;border-radius:8px;overflow:hidden;background:var(--taupe-soft)}
+  .bar i{height:100%;transition:width .5s cubic-bezier(.4,0,.2,1)}
+  .seg-orig{background:var(--taupe);width:100%}
+  .seg-new{background:var(--gold)}
+  .seg-saved{background:repeating-linear-gradient(45deg,var(--gold-soft),var(--gold-soft) 5px,#eaddc4 5px,#eaddc4 10px)}
+  .cmp-caption{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.5}
+  .cmp-caption .dotg{display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--gold);vertical-align:middle;margin:0 4px 0 2px}
+  .cmp-caption .dots{display:inline-block;width:9px;height:9px;border-radius:2px;background:repeating-linear-gradient(45deg,var(--gold-soft),var(--gold-soft) 3px,#eaddc4 3px,#eaddc4 6px);vertical-align:middle;margin:0 4px 0 8px}
+
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:22px}
+  .stat{background:var(--surface);padding:16px 18px}
+  .stat .k{font-size:11.5px;color:var(--muted);letter-spacing:.02em;display:flex;align-items:center;gap:6px;margin-bottom:5px}
+  .stat .v{font-family:'Fraunces',serif;font-size:clamp(18px,2.5vw,22px);color:var(--espresso);font-weight:500}
+  .stat .v.gold{color:var(--gold)}
+  .stat .sub{font-size:11px;color:var(--muted);margin-top:2px}
+
+  .note{background:var(--surface-warm);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-top:22px;font-size:13.5px;color:var(--ink);line-height:1.55}
+  .note b{color:var(--espresso);font-weight:600}
+  .note .tag{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
+
+  .cta{margin-top:22px;background:var(--espresso);border-radius:var(--radius);padding:clamp(24px,3.4vw,34px);display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+  .cta .txt{max-width:520px}
+  .cta h3{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(20px,3vw,26px);color:var(--cream);line-height:1.15}
+  .cta h3 em{color:var(--gold);font-style:italic}
+  .cta p{color:var(--taupe);font-size:14px;margin-top:8px;line-height:1.5}
+  .wa-cta{background:#25D366;color:#0a3d1e;border:none;border-radius:11px;padding:15px 24px;font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;transition:transform .12s,filter .15s;display:inline-flex;align-items:center;gap:9px}
+  .wa-cta:hover{filter:brightness(1.05);transform:translateY(-1px)}
+  .wa-cta svg{width:18px;height:18px}
+
+  .disclaimer{font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:22px;text-align:center;max-width:760px;margin-left:auto;margin-right:auto}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="brand">
+      <div class="wordmark">VALIOR<span class="dot">.</span></div>
+      <small>Real Estate &amp; Legal · Lima</small>
+    </div>
+    <h1>Calculadora de <em>amortización</em></h1>
+  </header>
+
+  <div class="grid">
+
+    <!-- INPUTS -->
+    <section class="card" aria-label="Datos de tu deuda">
+      <div class="eyebrow">Tu deuda hoy</div>
+
+      <div class="field">
+        <div class="field-head">
+          <label>Moneda</label>
+          <div class="toggle" id="curToggle" role="group" aria-label="Moneda">
+            <button data-cur="PEN" class="on" type="button">Soles</button>
+            <button data-cur="USD" type="button">Dólares</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <label>Saldo actual de tu deuda
+            <span class="info" tabindex="0">i<span class="tip">Cuánto te falta pagar hoy de tu crédito hipotecario. Si recién estás simulando, usa el monto que financiarías con el banco.</span></span>
+          </label>
+        </div>
+        <div class="input-shell">
+          <span class="pre" id="cur1">S/</span>
+          <input id="saldo" type="text" inputmode="numeric" value="360,000" aria-label="Saldo de la deuda">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <label>Años que te faltan pagar</label>
+          <span class="val"><span id="aniosLbl">20</span> años</span>
+        </div>
+        <input id="anios" type="range" min="2" max="30" step="1" value="20" aria-label="Años restantes">
+        <div class="range-scale"><span>2</span><span>30</span></div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <label>Tasa de interés — TEA
+            <span class="info" tabindex="0">i<span class="tip">Tasa Efectiva Anual de tu crédito. Es la que figura en tu cronograma de pagos.</span></span>
+          </label>
+        </div>
+        <div class="input-shell">
+          <input id="tea" type="text" inputmode="decimal" value="10.5" aria-label="Tasa efectiva anual">
+          <span class="post">% anual</span>
+        </div>
+      </div>
+
+      <div class="field extra-field">
+        <div class="field-head">
+          <label>Aporte extra al capital
+            <span class="info" tabindex="0">i<span class="tip">Dinero adicional que pagas cada mes DIRECTO al capital (no adelantar cuotas). Cada sol reduce tu deuda y acorta el plazo.</span></span>
+          </label>
+          <span class="valbig"><span class="cur" id="cur2">S/</span><span id="extraLbl">600</span></span>
+        </div>
+        <input id="extra" type="range" min="0" max="5000" step="50" value="600" aria-label="Aporte extra mensual al capital">
+        <div class="range-scale"><span id="ex0">S/ 0</span><span id="ex5">S/ 5,000</span></div>
+        <div class="subnote">Mueve la barra y observa cuántos años te ahorras. Este monto se suma a tu cuota normal.</div>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <div>
+      <section class="result-hero" aria-live="polite">
+        <div class="lbl">Te liberas de tu deuda</div>
+        <div class="saved" id="savedBig"><span class="big">0</span><span class="u">meses</span> antes</div>
+        <div class="fine" id="savedFine"></div>
+      </section>
+
+      <section class="card">
+        <div class="eyebrow">Antes y después</div>
+        <div class="cmp">
+          <div class="cmprow">
+            <div class="cmptop"><span>Plazo original</span><span class="yr" id="origYr">20 años</span></div>
+            <div class="bar"><i class="seg-orig" style="width:100%"></i></div>
+          </div>
+          <div class="cmprow">
+            <div class="cmptop"><span>Aportando extra al capital</span><span class="yr gold" id="newYr">—</span></div>
+            <div class="bar"><i class="seg-new" id="segNew" style="width:70%"></i><i class="seg-saved" id="segSaved" style="width:30%"></i></div>
+          </div>
+          <div class="cmp-caption"><span class="dotg"></span> Tu nuevo plazo <span class="dots"></span> Tiempo que te ahorras</div>
+        </div>
+
+        <div class="stats">
+          <div class="stat">
+            <div class="k">Terminas de pagar en</div>
+            <div class="v" id="stNuevo">—</div>
+            <div class="sub" id="stNuevoSub"></div>
+          </div>
+          <div class="stat">
+            <div class="k">Cuotas que ya no pagas</div>
+            <div class="v gold" id="stCuotas">—</div>
+            <div class="sub">meses menos de deuda</div>
+          </div>
+          <div class="stat">
+            <div class="k">Tu cuota mensual normal</div>
+            <div class="v" id="stCuota">—</div>
+            <div class="sub">no cambia</div>
+          </div>
+          <div class="stat">
+            <div class="k">Desembolso total al mes</div>
+            <div class="v" id="stTotalMes">—</div>
+            <div class="sub" id="stTotalMesSub">cuota + aporte extra</div>
+          </div>
+        </div>
+
+        <div class="note">
+          <span class="tag">Importante</span><br>
+          Este cálculo asume que tu aporte extra <b>reduce el plazo</b> (amortización de capital), no que adelantas cuotas. Son cosas distintas: <b>reducir plazo</b> te libera antes y es lo que ves aquí; <b>reducir cuota</b> mantiene la misma fecha final pero baja tu mensualidad. Al pedir tu amortización al banco, indica siempre <b>"reducción de plazo"</b>.
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="cta">
+    <div class="txt">
+      <h3>¿Quieres <em>salir de tu deuda antes</em>?</h3>
+      <p>En VALIOR te ayudamos a armar un plan de amortización a tu medida y a gestionar el trámite con tu banco para que cada sol extra trabaje a tu favor.</p>
+    </div>
+    <a class="wa-cta" id="waCta" href="#" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.2.2 2.1 3.2 5 4.5.7.3 1.3.5 1.7.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2z"/></svg>
+      Hablar con VALIOR
+    </a>
+  </section>
+
+  <p class="disclaimer">Cálculo <b>referencial</b> con fines educativos, basado en el sistema de cuotas constantes (método francés). El resultado real depende de las condiciones de tu contrato y de la política de amortización de tu banco. No constituye asesoría financiera formal. © VALIOR · Real Estate &amp; Legal.</p>
+
+</div>
+
+<script>
+(function(){
+  var WHATSAPP = '51925033657';
+
+  var cur='PEN', symbols={PEN:'S/',USD:'US$'};
+  var els={
+    saldo:document.getElementById('saldo'),
+    anios:document.getElementById('anios'),
+    tea:document.getElementById('tea'),
+    extra:document.getElementById('extra')
+  };
+
+  function sym(n,dec){dec=dec===undefined?0:dec;return symbols[cur]+' '+new Intl.NumberFormat('es-PE',{minimumFractionDigits:dec,maximumFractionDigits:dec}).format(n);}
+  function num(el){return parseFloat(String(el.value).replace(/[^0-9.]/g,''))||0;}
+
+  function attachMoney(el){
+    el.addEventListener('input',function(){
+      var atEnd=el.selectionStart===el.value.length;
+      var raw=el.value.replace(/[^0-9]/g,'');
+      el.value = raw ? new Intl.NumberFormat('es-PE').format(parseInt(raw,10)) : '';
+      if(atEnd){el.selectionStart=el.selectionEnd=el.value.length;}
+      compute();
+    });
+  }
+  attachMoney(els.saldo);
+  els.tea.addEventListener('input',compute);
+  els.anios.addEventListener('input',compute);
+  els.extra.addEventListener('input',compute);
+
+  document.querySelectorAll('#curToggle button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('#curToggle button').forEach(function(x){x.classList.remove('on')});
+      b.classList.add('on'); cur=b.getAttribute('data-cur');
+      document.getElementById('cur1').textContent=symbols[cur];
+      document.getElementById('cur2').textContent=symbols[cur];
+      document.getElementById('ex0').textContent=symbols[cur]+' 0';
+      document.getElementById('ex5').textContent=symbols[cur]+' 5,000';
+      compute();
+    });
+  });
+
+  function plural(n,s,p){return n+' '+(n===1?s:p);}
+  function fmtDur(months){
+    var y=Math.floor(months/12), m=months%12;
+    if(y<=0) return plural(m,'mes','meses');
+    if(m===0) return plural(y,'año','años');
+    return plural(y,'año','años')+' '+plural(m,'mes','meses');
+  }
+
+  function payoffMonths(P, i, cuota, extra){
+    // simulate months until balance cleared; returns months (capped)
+    var bal=P, m=0, guard=1000;
+    while(bal>0.005 && m<guard){
+      var interest=bal*i;
+      var principal=(cuota-interest)+extra;
+      if(principal<=0) return Infinity; // cuota can't cover interest
+      bal-=principal; m++;
+    }
+    return m;
+  }
+
+  function compute(){
+    var P=num(els.saldo);
+    var anios=parseInt(els.anios.value,10);
+    var teaPct=num(els.tea);
+    var extra=parseFloat(els.extra.value)||0;
+
+    document.getElementById('aniosLbl').textContent=anios;
+    document.getElementById('extraLbl').textContent=new Intl.NumberFormat('es-PE').format(extra);
+
+    var n=anios*12;
+    var i=Math.pow(1+teaPct/100,1/12)-1;
+    var cuota=(i>0)? P*i/(1-Math.pow(1+i,-n)) : (n>0?P/n:0);
+
+    var newN = extra>0 ? payoffMonths(P,i,cuota,extra) : n;
+    if(!isFinite(newN)||newN>n) newN=n;
+    var saved = n-newN;
+
+    // headline
+    var big=document.getElementById('savedBig');
+    if(saved<=0){
+      big.innerHTML='<span class="big">0</span><span class="u">meses</span> antes';
+    } else {
+      var y=Math.floor(saved/12), mm=saved%12;
+      var html='';
+      if(y>0){ html+='<span class="big">'+y+'</span><span class="u">'+(y===1?'año':'años')+'</span>'; }
+      if(mm>0){ html+='<span class="big" style="'+(y>0?'font-size:.62em;':'')+'">'+mm+'</span><span class="u">'+(mm===1?'mes':'meses')+'</span>'; }
+      html+=' antes';
+      big.innerHTML=html;
+    }
+
+    var fine=document.getElementById('savedFine');
+    if(saved>0){
+      fine.innerHTML='Aportando <b>'+sym(extra)+' extra</b> al capital cada mes, terminas de pagar en <b>'+fmtDur(newN)+'</b> en lugar de '+fmtDur(n)+'.';
+    } else {
+      fine.innerHTML='Sube tu aporte extra al capital para ver cuánto tiempo te ahorras.';
+    }
+
+    // comparison bars
+    document.getElementById('origYr').textContent=fmtDur(n);
+    document.getElementById('newYr').textContent= saved>0 ? fmtDur(newN) : fmtDur(n);
+    var pctNew = n>0 ? Math.max(newN/n*100,2) : 100;
+    document.getElementById('segNew').style.width=pctNew+'%';
+    document.getElementById('segSaved').style.width=(100-pctNew)+'%';
+
+    // stats
+    document.getElementById('stNuevo').textContent=fmtDur(newN);
+    document.getElementById('stNuevoSub').textContent=newN+' cuotas en total';
+    document.getElementById('stCuotas').textContent= saved>0 ? saved : '0';
+    document.getElementById('stCuota').textContent=sym(Math.round(cuota));
+    document.getElementById('stTotalMes').textContent=sym(Math.round(cuota+extra));
+
+    // whatsapp cta
+    var msg='Hola VALIOR 👋 Usé la calculadora de amortización.\n\n'+
+      '• Saldo de mi deuda: '+sym(P)+'\n'+
+      '• Plazo restante: '+fmtDur(n)+'\n'+
+      '• TEA: '+teaPct+'%\n'+
+      '• Aporte extra al capital: '+sym(extra)+' al mes\n'+
+      (saved>0? '• Me ahorraría: '+fmtDur(saved)+' de deuda\n':'')+
+      '\nQuiero asesoría para armar mi plan de amortización. ¡Gracias!';
+    document.getElementById('waCta').href='https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(msg);
+  }
+
+  compute();
+})();
+</script>
+</body>
+</html>

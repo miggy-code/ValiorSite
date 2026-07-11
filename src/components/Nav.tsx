@@ -27,6 +27,7 @@ export default function Nav({ tone = "light" }: { tone?: "light" | "dark" }) {
         <nav className="nav-links">
           <Link href="/#servicios">Servicios</Link>
           <Link href="/nosotros">Nosotros</Link>
+          <Link href="/planifica">Planifica</Link>
           <Link href="/contacto" className="nav-cta">
             Contacto
           </Link>
@@ -45,6 +46,7 @@ export default function Nav({ tone = "light" }: { tone?: "light" | "dark" }) {
       <div className={`mobile-nav${menuOpen ? " open" : ""}`}>
         <Link href="/#servicios" onClick={closeMenu}>Servicios</Link>
         <Link href="/nosotros" onClick={closeMenu}>Nosotros</Link>
+        <Link href="/planifica" onClick={closeMenu}>Planifica</Link>
         <Link href="/contacto" onClick={closeMenu}>Contacto</Link>
         <span className="mn-meta">Miraflores — Lima, Perú</span>
       </div>

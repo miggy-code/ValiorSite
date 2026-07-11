@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="es-PE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VALIOR · Calculadora de Crédito Hipotecario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --espresso:#4a3f35;
+    --cream:#f7f3ee;
+    --taupe:#b8a99a;
+    --gold:#c9952a;
+
+    --ink:#4a3f35;
+    --muted:#8a7d6f;
+    --line:#e4dcd1;
+    --surface:#ffffff;
+    --surface-warm:#fbf8f4;
+    --gold-soft:#f2e6cf;
+    --taupe-soft:#ece5dd;
+
+    --shadow:0 1px 2px rgba(74,63,53,.04), 0 8px 30px rgba(74,63,53,.06);
+    --radius:16px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Instrument Sans',system-ui,sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:clamp(16px,4vw,48px);
+  }
+
+  .wrap{max-width:1120px;margin:0 auto}
+
+  /* Header */
+  .masthead{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    gap:24px;flex-wrap:wrap;
+    padding-bottom:22px;margin-bottom:28px;
+    border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex;flex-direction:column;gap:2px}
+  .wordmark{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(26px,4vw,34px);
+    letter-spacing:.14em;
+    color:var(--espresso);
+    line-height:1;
+  }
+  .wordmark .dot{color:var(--gold)}
+  .brand small{
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--muted);font-weight:500;
+  }
+  .masthead h1{
+    font-family:'Fraunces',serif;
+    font-weight:400;font-size:clamp(18px,2.4vw,22px);
+    color:var(--espresso);text-align:right;max-width:360px;
+  }
+  .masthead h1 em{color:var(--gold);font-style:italic}
+
+  /* Grid */
+  .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.18fr);gap:22px;align-items:start}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:clamp(20px,3vw,30px);
+  }
+  .card + .card{margin-top:22px}
+
+  .eyebrow{
+    font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--gold);font-weight:600;margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  /* Fields */
+  .field{margin-bottom:22px}
+  .field:last-child{margin-bottom:0}
+  .field-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+  .field label{font-size:14px;font-weight:600;color:var(--espresso);display:flex;align-items:center;gap:7px}
+  .field .val{font-family:'Fraunces',serif;font-size:17px;color:var(--espresso);font-weight:500;white-space:nowrap}
+  .field .val.accent{color:var(--gold)}
+
+  .info{
+    width:16px;height:16px;border-radius:50%;
+    border:1px solid var(--taupe);color:var(--muted);
+    font-size:10px;font-weight:700;line-height:14px;text-align:center;
+    cursor:help;flex:none;position:relative;background:transparent;
+    font-family:'Instrument Sans',sans-serif;
+  }
+  .info:hover,.info:focus{border-color:var(--gold);color:var(--gold);outline:none}
+  .info .tip{
+    position:absolute;bottom:calc(100% + 9px);left:50%;transform:translateX(-50%);
+    width:230px;background:var(--espresso);color:var(--cream);
+    font-size:12px;font-weight:400;line-height:1.45;letter-spacing:0;
+    text-transform:none;text-align:left;
+    padding:11px 13px;border-radius:10px;
+    opacity:0;visibility:hidden;transition:opacity .16s ease,transform .16s ease;
+    z-index:20;box-shadow:0 10px 30px rgba(74,63,53,.28);pointer-events:none;
+  }
+  .info .tip::after{
+    content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+    border:6px solid transparent;border-top-color:var(--espresso);
+  }
+  .info:hover .tip,.info:focus .tip{opacity:1;visibility:visible;transform:translateX(-50%) translateY(-2px)}
+  @media(max-width:520px){.info .tip{width:180px;left:auto;right:-6px;transform:none}.info .tip::after{left:auto;right:10px;transform:none}.info:hover .tip,.info:focus .tip{transform:translateY(-2px)}}
+
+  /* Text inputs */
+  .input-shell{display:flex;align-items:center;border:1px solid var(--line);border-radius:11px;background:var(--surface-warm);transition:border-color .15s,box-shadow .15s;overflow:hidden}
+  .input-shell:focus-within{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+  .input-shell .pre{padding:0 4px 0 14px;color:var(--muted);font-weight:600;font-size:15px}
+  .input-shell .post{padding:0 14px 0 4px;color:var(--muted);font-weight:600;font-size:14px}
+  .input-shell input{
+    flex:1;border:none;background:transparent;outline:none;
+    padding:13px 8px;font-family:'Instrument Sans',sans-serif;
+    font-size:16px;font-weight:600;color:var(--espresso);width:100%;min-width:0;
+  }
+  .input-shell input::-webkit-outer-spin-button,.input-shell input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .input-shell input[type=number]{-moz-appearance:textfield}
+
+  /* Toggle */
+  .toggle{display:inline-flex;background:var(--taupe-soft);border-radius:10px;padding:3px;gap:3px}
+  .toggle button{
+    border:none;background:transparent;cursor:pointer;
+    padding:8px 16px;border-radius:8px;font-family:'Instrument Sans',sans-serif;
+    font-size:13px;font-weight:600;color:var(--muted);transition:.15s;
+  }
+  .toggle button.on{background:var(--surface);color:var(--espresso);box-shadow:0 1px 3px rgba(74,63,53,.12)}
+
+  /* Slider */
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:6px;
+    border-radius:99px;outline:none;cursor:pointer;margin-top:4px;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;
+    background:var(--gold);border:3px solid var(--surface);
+    box-shadow:0 1px 5px rgba(74,63,53,.28);transition:transform .12s;
+  }
+  input[type=range]::-webkit-slider-thumb:active{transform:scale(1.12)}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--gold);border:3px solid var(--surface);box-shadow:0 1px 5px rgba(74,63,53,.28);cursor:pointer}
+  .range-scale{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:6px}
+  .subnote{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.4}
+  .subnote b{color:var(--espresso);font-weight:600}
+
+  /* Advanced */
+  details.adv{margin-top:6px;border-top:1px solid var(--line);padding-top:16px}
+  details.adv summary{
+    list-style:none;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);
+    display:flex;align-items:center;gap:8px;user-select:none;
+  }
+  details.adv summary::-webkit-details-marker{display:none}
+  details.adv summary .chev{transition:transform .2s;font-size:11px;color:var(--gold)}
+  details.adv[open] summary .chev{transform:rotate(90deg)}
+  details.adv .adv-body{padding-top:18px}
+
+  /* ===== RESULT ===== */
+  .result-hero{
+    background:linear-gradient(160deg,var(--espresso),#3a3129);
+    color:var(--cream);border-radius:var(--radius);
+    padding:clamp(22px,3.4vw,32px);position:relative;overflow:hidden;
+  }
+  .result-hero::after{
+    content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;
+    background:radial-gradient(circle,rgba(201,149,42,.22),transparent 70%);
+  }
+  .result-hero .lbl{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--taupe);font-weight:600}
+  .cuota{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(40px,7vw,60px);line-height:1.02;margin:6px 0 2px;letter-spacing:-.01em}
+  .cuota .cur{font-size:.5em;color:var(--gold);vertical-align:baseline;margin-right:6px;font-weight:500}
+  .result-hero .fine{font-size:12.5px;color:var(--taupe);position:relative;z-index:1}
+
+  /* Breakdown */
+  .bd-title{font-size:13px;font-weight:600;color:var(--espresso);margin:26px 0 12px;display:flex;align-items:center;justify-content:space-between}
+  .bd-title span:last-child{color:var(--muted);font-weight:500;font-size:12px}
+  .stack{display:flex;height:16px;border-radius:8px;overflow:hidden;background:var(--taupe-soft)}
+  .stack i{height:100%;transition:width .5s cubic-bezier(.4,0,.2,1)}
+  .seg-amort{background:var(--gold)}
+  .seg-int{background:var(--espresso)}
+  .seg-des{background:var(--taupe)}
+  .seg-por{background:#d8cabb}
+  .legend{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px;margin-top:16px}
+  .legend .li{display:flex;align-items:flex-start;gap:9px;font-size:13px}
+  .legend .sw{width:12px;height:12px;border-radius:4px;margin-top:3px;flex:none}
+  .legend .li .t{color:var(--espresso);font-weight:600}
+  .legend .li .n{color:var(--muted);font-size:12px}
+  .legend .li .amt{margin-left:auto;font-family:'Fraunces',serif;font-size:14px;color:var(--espresso);font-weight:500;white-space:nowrap;padding-left:8px}
+
+  /* Stat grid */
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:22px}
+  .stat{background:var(--surface);padding:16px 18px}
+  .stat .k{font-size:11.5px;color:var(--muted);letter-spacing:.02em;display:flex;align-items:center;gap:6px;margin-bottom:5px}
+  .stat .v{font-family:'Fraunces',serif;font-size:clamp(19px,2.6vw,23px);color:var(--espresso);font-weight:500}
+  .stat .v.gold{color:var(--gold)}
+  .stat .sub{font-size:11px;color:var(--muted);margin-top:2px}
+
+  /* Chart */
+  .chart-card .cap{font-size:13px;color:var(--muted);margin-bottom:2px}
+  .chart-wrap{width:100%;margin-top:14px}
+  svg.amort{width:100%;height:auto;display:block;overflow:visible}
+  .cross-note{
+    margin-top:16px;background:var(--gold-soft);border:1px solid #e8d3a6;
+    border-radius:11px;padding:13px 15px;display:flex;gap:11px;align-items:flex-start;
+    font-size:13px;color:var(--espresso);line-height:1.5;
+  }
+  .cross-note .ic{color:var(--gold);font-size:16px;line-height:1;margin-top:1px}
+  .cross-note b{font-weight:600}
+
+  /* Learn */
+  .learn .qa{border-top:1px solid var(--line);padding:16px 0}
+  .learn .qa:first-of-type{border-top:none;padding-top:4px}
+  .learn .qa summary{
+    list-style:none;cursor:pointer;font-family:'Fraunces',serif;font-size:16px;
+    color:var(--espresso);font-weight:500;display:flex;justify-content:space-between;
+    align-items:center;gap:12px;user-select:none;
+  }
+  .learn .qa summary::-webkit-details-marker{display:none}
+  .learn .qa summary .pm{color:var(--gold);font-size:20px;flex:none;transition:transform .2s;font-family:'Instrument Sans',sans-serif}
+  .learn .qa[open] summary .pm{transform:rotate(45deg)}
+  .learn .qa p{font-size:14px;color:var(--muted);line-height:1.6;margin-top:11px}
+  .learn .qa p b{color:var(--espresso);font-weight:600}
+
+  /* CTA */
+  .cta{
+    margin-top:22px;background:var(--espresso);border-radius:var(--radius);
+    padding:clamp(24px,3.4vw,34px);display:flex;gap:24px;align-items:center;
+    justify-content:space-between;flex-wrap:wrap;
+  }
+  .cta .txt{max-width:520px}
+  .cta h3{font-family:'Fraunces',serif;font-weight:500;font-size:clamp(20px,3vw,26px);color:var(--cream);line-height:1.15}
+  .cta h3 em{color:var(--gold);font-style:italic}
+  .cta p{color:var(--taupe);font-size:14px;margin-top:8px;line-height:1.5}
+  .btn{
+    background:var(--gold);color:#3a2c0c;border:none;border-radius:11px;
+    padding:15px 26px;font-family:'Instrument Sans',sans-serif;font-size:15px;font-weight:600;
+    cursor:pointer;text-decoration:none;white-space:nowrap;transition:transform .12s,filter .15s;
+  }
+  .btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+
+  .disclaimer{font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:22px;text-align:center;max-width:760px;margin-left:auto;margin-right:auto}
+
+  /* ===== LEAD MODAL ===== */
+  .overlay{
+    position:fixed;inset:0;background:rgba(38,32,26,.55);backdrop-filter:blur(3px);
+    display:flex;align-items:center;justify-content:center;padding:20px;z-index:100;
+    opacity:0;visibility:hidden;transition:opacity .2s ease;
+  }
+  .overlay.show{opacity:1;visibility:visible}
+  .modal{
+    background:var(--cream);border-radius:20px;width:100%;max-width:440px;
+    max-height:92vh;overflow:auto;box-shadow:0 30px 80px rgba(38,32,26,.4);
+    transform:translateY(14px) scale(.98);transition:transform .24s cubic-bezier(.2,.8,.2,1);
+    position:relative;
+  }
+  .overlay.show .modal{transform:translateY(0) scale(1)}
+  .modal-top{background:linear-gradient(160deg,var(--espresso),#3a3129);color:var(--cream);padding:26px 28px 22px;position:relative;overflow:hidden}
+  .modal-top::after{content:"";position:absolute;right:-30px;top:-30px;width:150px;height:150px;background:radial-gradient(circle,rgba(201,149,42,.25),transparent 70%)}
+  .modal-top .kicker{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:8px}
+  .modal-top h2{font-family:'Fraunces',serif;font-weight:500;font-size:23px;line-height:1.15;position:relative;z-index:1}
+  .modal-top p{color:var(--taupe);font-size:13px;margin-top:7px;position:relative;z-index:1;line-height:1.45}
+  .mclose{position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:1px solid rgba(247,243,238,.25);background:rgba(247,243,238,.08);color:var(--cream);font-size:17px;cursor:pointer;z-index:2;line-height:1;transition:.15s}
+  .mclose:hover{background:rgba(247,243,238,.18)}
+  .modal-body{padding:22px 28px 26px}
+
+  .quote-strip{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+  .quote-strip .ql{font-size:11.5px;color:var(--muted);letter-spacing:.02em}
+  .quote-strip .qv{font-family:'Fraunces',serif;font-size:22px;color:var(--espresso);font-weight:500}
+  .quote-strip .qsub{font-size:11px;color:var(--muted);text-align:right;max-width:130px;line-height:1.35}
+
+  .fgrp{margin-bottom:14px}
+  .fgrp label{display:block;font-size:12.5px;font-weight:600;color:var(--espresso);margin-bottom:6px}
+  .fgrp label .req{color:var(--gold)}
+  .fgrp input{
+    width:100%;border:1px solid var(--line);border-radius:11px;background:var(--surface);
+    padding:12px 14px;font-family:'Instrument Sans',sans-serif;font-size:15px;color:var(--espresso);
+    outline:none;transition:border-color .15s,box-shadow .15s;
+  }
+  .fgrp input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-soft)}
+  .fgrp input.err{border-color:#c0532f;box-shadow:0 0 0 3px #f3d9cd}
+  .ferr{font-size:11.5px;color:#c0532f;margin-top:5px;display:none}
+  .fgrp.invalid .ferr{display:block}
+
+  .wa-btn{
+    width:100%;margin-top:8px;border:none;border-radius:12px;cursor:pointer;
+    background:#25D366;color:#0a3d1e;font-family:'Instrument Sans',sans-serif;font-size:15.5px;font-weight:600;
+    padding:15px;display:flex;align-items:center;justify-content:center;gap:10px;transition:filter .15s,transform .12s;
+  }
+  .wa-btn:hover{filter:brightness(1.04);transform:translateY(-1px)}
+  .wa-btn svg{width:19px;height:19px;flex:none}
+  .mnote{font-size:11px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.5}
+
+  .msuccess{text-align:center;padding:8px 4px 4px}
+  .msuccess .chk{width:56px;height:56px;border-radius:50%;background:var(--gold-soft);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:var(--gold);font-size:28px}
+  .msuccess h3{font-family:'Fraunces',serif;font-weight:500;font-size:21px;color:var(--espresso)}
+  .msuccess p{font-size:13.5px;color:var(--muted);margin-top:8px;line-height:1.5}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="brand">
+      <div class="wordmark">VALIOR<span class="dot">.</span></div>
+      <small>Real Estate &amp; Legal · Lima</small>
+    </div>
+    <h1>Calculadora de <em>crédito hipotecario</em></h1>
+  </header>
+
+  <div class="grid">
+
+    <!-- ============ INPUTS ============ -->
+    <section class="card" aria-label="Datos del crédito">
+      <div class="eyebrow">Tus datos</div>
+
+      <div class="field">
+        <div class="field-head">
+          <label>Moneda</label>
+          <div class="toggle" id="curToggle" role="group" aria-label="Moneda">
+            <button data-cur="PEN" class="on" type="button">Soles</button>
+            <button data-cur="USD" type="button">Dólares</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <label>Valor del inmueble
+            <span class="info" tabindex="0">i<span class="tip">Precio total de la propiedad que deseas comprar, según la partida o la cotización del proyecto.</span></span>
+          </label>
+        </div>
+        <div class="input-shell">
+          <span class="pre" id="cur1">S/</span>
+          <input id="precio" type="text" inputmode="numeric" value="450,000" aria-label="Valor del inmueble">
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <label>Cuota inicial
+            <span class="info" tabindex="0">i<span class="tip">Es el monto que aportas de tu bolsillo. En Perú suele exigirse desde 10%. A mayor inicial, menor será tu cuota mensual y tu interés total.</span></span>
+          </label>
+          <span class="val"><span id="inicialPct">20</span>% · <span class="accent" id="inicialMonto"></span></span>
+        </div>
+        <input id="inicial" type="range" min="10" max="60" step="1" value="20" aria-label="Porcentaje de cuota inicial">
+        <div class="range-scale"><span>10%</span><span>60%</span></div>
+        <div class="subnote">Financiarás <b id="financiaTxt"></b> con el banco.</div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <label>Plazo del crédito</label>
+          <span class="val"><span id="plazoAnios">20</span> años</span>
+        </div>
+        <input id="plazo" type="range" min="5" max="30" step="1" value="20" aria-label="Plazo en años">
+        <div class="range-scale"><span>5</span><span>30</span></div>
+      </div>
+
+      <div class="field">
+        <div class="field-head">
+          <label>Tasa de interés — TEA
+            <span class="info" tabindex="0">i<span class="tip">Tasa Efectiva Anual: el interés puro que cobra el banco sobre tu préstamo. Es referencial; cada banco te da la suya según tu perfil.</span></span>
+          </label>
+        </div>
+        <div class="input-shell">
+          <input id="tea" type="text" inputmode="decimal" value="10.5" aria-label="Tasa efectiva anual">
+          <span class="post">% anual</span>
+        </div>
+        <div class="subnote">Valor referencial para el mercado peruano. Ajústalo con la tasa real de tu banco.</div>
+      </div>
+
+      <details class="adv">
+        <summary><span class="chev">▶</span> Seguros y costos adicionales</summary>
+        <div class="adv-body">
+          <div class="field">
+            <div class="field-head">
+              <label>Seguro de desgravamen
+                <span class="info" tabindex="0">i<span class="tip">Seguro obligatorio que cancela la deuda si el titular fallece. Se cobra mensual sobre el saldo pendiente, por eso baja mes a mes.</span></span>
+              </label>
+              <span class="val" style="font-size:14px"><span id="desgVal">0.030</span>% mens.</span>
+            </div>
+            <input id="desg" type="range" min="0" max="0.06" step="0.005" value="0.030" aria-label="Tasa mensual de desgravamen">
+          </div>
+          <div class="field">
+            <div class="field-head">
+              <label>Seguro del inmueble
+                <span class="info" tabindex="0">i<span class="tip">Cubre el inmueble ante incendio o sismo. Se calcula sobre el valor de la propiedad, prorrateado cada mes.</span></span>
+              </label>
+              <span class="val" style="font-size:14px"><span id="inmVal">0.30</span>% anual</span>
+            </div>
+            <input id="inm" type="range" min="0" max="0.6" step="0.05" value="0.30" aria-label="Tasa anual de seguro del inmueble">
+          </div>
+          <div class="field">
+            <div class="field-head">
+              <label>Portes y comisiones (mensual)
+                <span class="info" tabindex="0">i<span class="tip">Cargo administrativo fijo que cobran algunos bancos por el mantenimiento del crédito.</span></span>
+              </label>
+            </div>
+            <div class="input-shell">
+              <span class="pre" id="cur2">S/</span>
+              <input id="portes" type="text" inputmode="numeric" value="11" aria-label="Portes mensuales">
+            </div>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- ============ RESULTS ============ -->
+    <div>
+      <section class="result-hero" aria-live="polite">
+        <div class="lbl">Cuota mensual estimada</div>
+        <div class="cuota"><span class="cur" id="curBig">S/</span><span id="cuotaVal">0</span></div>
+        <div class="fine" id="cuotaFine">Incluye capital, interés y seguros. Disminuye ligeramente cada mes.</div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ============ LEARN ============ -->
+  <section class="card learn" style="margin-top:22px">
+    <div class="eyebrow">Beneficios del Estado</div>
+    <details class="qa" open>
+      <summary>¿Cómo acceder a los beneficios del Estado?<span class="pm">+</span></summary>
+      <p>Programas como el <b>Nuevo Crédito Mi Vivienda</b> y el <b>Bono del Buen Pagador</b> ofrecen subsidios y tasas preferenciales para la compra de primera vivienda dentro de ciertos rangos de precio. Reducen el monto a financiar y, con ello, tu cuota mensual. En VALIOR revisamos si tu compra califica y gestionamos todo el proceso por ti.</p>
+    </details>
+  </section>
+
+  <section class="cta">
+    <div class="txt">
+      <h3>Convierte esta estimación en una <em>decisión con respaldo</em>.</h3>
+      <p>En VALIOR analizamos tu perfil, comparamos las tasas reales de los bancos y acompañamos la parte legal de tu compra — desde la due diligence registral hasta la firma.</p>
+    </div>
+    <a class="btn" href="#" id="ctaBtn">Solicitar asesoría</a>
+  </section>
+
+  <p class="disclaimer">Los resultados son <b>referenciales</b> y de carácter educativo. Las cuotas, tasas y seguros definitivos dependen de la evaluación crediticia de cada entidad financiera y de las condiciones vigentes al momento del desembolso. Esta herramienta no constituye una oferta ni asesoría financiera formal. © VALIOR · Real Estate &amp; Legal.</p>
+
+</div>
+
+<!-- ============ LEAD CAPTURE MODAL ============ -->
+<div class="overlay" id="overlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-top">
+      <button class="mclose" id="mClose" aria-label="Cerrar">&times;</button>
+      <div class="kicker">Proyectos certificados</div>
+      <h2 id="modalTitle">Recibe propuestas formales y exclusivas</h2>
+      <p>Para enviarte propuestas formales y exclusivas de proyectos inmobiliarios certificados, requerimos estos datos:</p>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <div class="quote-strip">
+        <div>
+          <div class="ql">Tu cuota estimada</div>
+          <div class="qv" id="mQuote">S/ 0</div>
+        </div>
+        <div class="qsub" id="mQuoteSub">Inmueble · plazo</div>
+      </div>
+
+      <div class="fgrp" id="grpName">
+        <label>Nombre completo <span class="req">*</span></label>
+        <input id="fName" type="text" autocomplete="name" placeholder="Ej. María Fernández Ríos">
+        <div class="ferr">Ingresa tu nombre completo.</div>
+      </div>
+      <div class="fgrp" id="grpBudget">
+        <label>Presupuesto <span class="req">*</span></label>
+        <input id="fBudget" type="text" inputmode="numeric" placeholder="Ej. 450,000">
+        <div class="ferr">Ingresa tu presupuesto.</div>
+      </div>
+      <div class="fgrp" id="grpDistricts">
+        <label>Distritos de interés <span class="req">*</span></label>
+        <input id="fDistricts" type="text" placeholder="Ej. Miraflores, San Isidro, Barranco">
+        <div class="ferr">Indica al menos un distrito.</div>
+      </div>
+      <div class="fgrp" id="grpDni">
+        <label>DNI <span class="req">*</span></label>
+        <input id="fDni" type="text" inputmode="numeric" maxlength="8" placeholder="8 dígitos">
+        <div class="ferr">El DNI debe tener 8 dígitos.</div>
+      </div>
+      <div class="fgrp" id="grpEmail">
+        <label>Correo <span class="req">*</span></label>
+        <input id="fEmail" type="email" autocomplete="email" placeholder="tucorreo@ejemplo.com">
+        <div class="ferr">Ingresa un correo válido.</div>
+      </div>
+
+      <button class="wa-btn" id="waSubmit">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.2.2 2.1 3.2 5 4.5.7.3 1.3.5 1.7.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2z"/></svg>
+        Enviar y continuar por WhatsApp
+      </button>
+      <p class="mnote">Al continuar aceptas que VALIOR se comunique contigo. Tus datos son confidenciales y no se comparten con terceros.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+
+  /* =====================================================================
+     CONFIGURACIÓN VALIOR  —  edita solo estas dos líneas
+     ---------------------------------------------------------------------
+     whatsappNumber : número con código de país, sin +, espacios ni guiones.
+                      Perú = 51. Ej: 51999888777
+     formEndpoint   : (opcional) URL de tu formulario para recibir los leads
+                      por correo/hoja de cálculo. Funciona con servicios como
+                      Formspree (https://formspree.io) o Getform, sin backend.
+                      Déjalo vacío ('') si por ahora solo quieres WhatsApp.
+     ===================================================================== */
+  var CONFIG = {
+    whatsappNumber: '51925033657',
+    formEndpoint:   ''
+  };
+
+  var cur = 'PEN';
+  var symbols = { PEN:'S/', USD:'US$' };
+  var state = {}; // últimos valores calculados, para el modal y WhatsApp
+
+  var els = {
+    precio:  document.getElementById('precio'),
+    inicial: document.getElementById('inicial'),
+    plazo:   document.getElementById('plazo'),
+    tea:     document.getElementById('tea'),
+    desg:    document.getElementById('desg'),
+    inm:     document.getElementById('inm'),
+    portes:  document.getElementById('portes')
+  };
+
+  function symFmt(n, dec){
+    dec = dec===undefined ? 0 : dec;
+    return symbols[cur] + ' ' + new Intl.NumberFormat('es-PE',{minimumFractionDigits:dec,maximumFractionDigits:dec}).format(n);
+  }
+  function num(el){ return parseFloat(String(el.value).replace(/[^0-9.]/g,'')) || 0; }
+
+  // format thousands live for text money inputs
+  function attachMoney(el){
+    el.addEventListener('input', function(){
+      var caretEnd = el.selectionStart === el.value.length;
+      var raw = el.value.replace(/[^0-9]/g,'');
+      if(raw===''){ el.value=''; compute(); return; }
+      el.value = new Intl.NumberFormat('es-PE').format(parseInt(raw,10));
+      if(caretEnd){ el.selectionStart = el.selectionEnd = el.value.length; }
+      compute();
+    });
+  }
+  attachMoney(els.precio);
+  attachMoney(els.portes);
+  els.tea.addEventListener('input', compute);
+
+  // currency toggle
+  var curBtns = document.querySelectorAll('#curToggle button');
+  curBtns.forEach(function(b){
+    b.addEventListener('click', function(){
+      curBtns.forEach(function(x){x.classList.remove('on')});
+      b.classList.add('on');
+      cur = b.getAttribute('data-cur');
+      document.getElementById('cur1').textContent = symbols[cur];
+      document.getElementById('cur2').textContent = symbols[cur];
+      document.getElementById('curBig').textContent = symbols[cur];
+      // sensible portes default when switching
+      els.portes.value = (cur==='USD') ? '3' : '11';
+      compute();
+    });
+  });
+
+  // range live labels
+  els.inicial.addEventListener('input', compute);
+  els.plazo.addEventListener('input', compute);
+  els.desg.addEventListener('input', compute);
+  els.inm.addEventListener('input', compute);
+
+  function irrMonthly(P, flows){
+    // find i so that sum(flow_t/(1+i)^t) == P
+    var lo=1e-9, hi=1.0;
+    function npv(i){ var s=-P; for(var t=0;t<flows.length;t++){ s += flows[t]/Math.pow(1+i,t+1);} return s; }
+    if(npv(lo) < 0) return 0;
+    for(var k=0;k<160;k++){ var mid=(lo+hi)/2; if(npv(mid)>0) lo=mid; else hi=mid; }
+    return (lo+hi)/2;
+  }
+
+  function compute(){
+    var precio  = num(els.precio);
+    var iniPct  = parseFloat(els.inicial.value);
+    var anios   = parseInt(els.plazo.value,10);
+    var teaPct  = num(els.tea);
+    var desgM   = parseFloat(els.desg.value)/100;      // monthly rate on balance
+    var inmA    = parseFloat(els.inm.value)/100;       // annual rate on property value
+    var portes  = num(els.portes);
+
+    // live labels
+    document.getElementById('inicialPct').textContent = iniPct;
+    document.getElementById('plazoAnios').textContent = anios;
+    document.getElementById('desgVal').textContent = parseFloat(els.desg.value).toFixed(3);
+    document.getElementById('inmVal').textContent  = parseFloat(els.inm.value).toFixed(2);
+
+    var inicialMonto = precio * iniPct/100;
+    var P = Math.max(precio - inicialMonto, 0);
+    document.getElementById('inicialMonto').textContent = symFmt(inicialMonto);
+    document.getElementById('financiaTxt').textContent  = symFmt(P);
+
+    var n = anios*12;
+    var tea = teaPct/100;
+    var tem = Math.pow(1+tea, 1/12) - 1;               // effective monthly rate
+
+    // French system base installment (capital + interest)
+    var cuotaBase = (tem>0) ? P*tem / (1 - Math.pow(1+tem, -n)) : (n>0? P/n : 0);
+    var inmMonthly = precio * inmA / 12;               // constant
+
+    // amortization walk
+    var saldo = P;
+    var totalInteres=0, totalPagado=0, firstDesg=0;
+    var flows=[];
+    var yearsData=[]; var curYearInt=0, curYearCap=0;
+    var crossoverMonth=null;
+    var firstInt = saldo*tem, firstCap = cuotaBase - firstInt;
+
+    for(var m=1;m<=n;m++){
+      var interes = saldo*tem;
+      var capital = cuotaBase - interes;
+      if(capital>saldo) capital=saldo;
+      var desg = saldo*desgM;
+      if(m===1) firstDesg = desg;
+      var cuotaMes = cuotaBase + desg + inmMonthly + portes;
+
+      totalInteres += interes;
+      totalPagado  += cuotaMes;
+      flows.push(cuotaMes);
+
+      if(crossoverMonth===null && capital>=interes) crossoverMonth=m;
+
+      curYearInt += interes; curYearCap += capital;
+      if(m%12===0 || m===n){
+        yearsData.push({ y:Math.ceil(m/12), interes:curYearInt, capital:curYearCap });
+        curYearInt=0; curYearCap=0;
+      }
+      saldo -= capital;
+      if(saldo<0.01) saldo=0;
+    }
+
+    var cuota1 = cuotaBase + firstDesg + inmMonthly + portes;
+
+    // headline
+    document.getElementById('cuotaVal').textContent =
+      new Intl.NumberFormat('es-PE',{minimumFractionDigits:0,maximumFractionDigits:0}).format(Math.round(cuota1));
+
+    // guardar para el modal / WhatsApp
+    state = {
+      moneda: symbols[cur],
+      precio: precio,
+      inicialPct: iniPct,
+      inicialMonto: inicialMonto,
+      financiado: P,
+      plazo: anios,
+      tea: teaPct,
+      cuota: cuota1
+    };
+  }
+
+  /* ============ MODAL DE CAPTURA + WHATSAPP ============ */
+  var overlay   = document.getElementById('overlay');
+  var modalBody = document.getElementById('modalBody');
+  var fName      = document.getElementById('fName');
+  var fBudget    = document.getElementById('fBudget');
+  var fDistricts = document.getElementById('fDistricts');
+  var fDni       = document.getElementById('fDni');
+  var fEmail     = document.getElementById('fEmail');
+
+  // formateo de miles en presupuesto y solo dígitos en DNI
+  fBudget.addEventListener('input', function(){
+    var raw = fBudget.value.replace(/[^0-9]/g,'');
+    fBudget.value = raw ? new Intl.NumberFormat('es-PE').format(parseInt(raw,10)) : '';
+  });
+  fDni.addEventListener('input', function(){ fDni.value = fDni.value.replace(/[^0-9]/g,'').slice(0,8); });
+
+  function openModal(){
+    // refrescar resumen de la cotización
+    document.getElementById('mQuote').textContent =
+      state.moneda + ' ' + new Intl.NumberFormat('es-PE',{maximumFractionDigits:0}).format(Math.round(state.cuota||0));
+    document.getElementById('mQuoteSub').textContent =
+      state.moneda + ' ' + new Intl.NumberFormat('es-PE',{maximumFractionDigits:0}).format(state.precio||0) +
+      ' · ' + (state.plazo||0) + ' años · ' + (state.inicialPct||0) + '% inicial';
+    // pre-llenar presupuesto con el valor del inmueble (editable)
+    if(!fBudget.value && state.precio){
+      fBudget.value = new Intl.NumberFormat('es-PE').format(Math.round(state.precio));
+    }
+    overlay.classList.add('show');
+    overlay.setAttribute('aria-hidden','false');
+    setTimeout(function(){ fName && fName.focus(); }, 240);
+  }
+  function closeModal(){
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden','true');
+  }
+
+  document.getElementById('ctaBtn').addEventListener('click', function(e){ e.preventDefault(); openModal(); });
+  document.getElementById('mClose').addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){ if(e.target===overlay) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && overlay.classList.contains('show')) closeModal(); });
+
+  function setErr(groupId, on){
+    var g = document.getElementById(groupId);
+    g.classList.toggle('invalid', on);
+    g.querySelector('input').classList.toggle('err', on);
+  }
+
+  function buildMessage(name, budget, districts, dni, email){
+    var f = function(n){ return state.moneda + ' ' + new Intl.NumberFormat('es-PE',{maximumFractionDigits:0}).format(Math.round(n||0)); };
+    return 'Hola VALIOR 👋 Soy ' + name + '. Quiero recibir propuestas de proyectos inmobiliarios certificados.\n\n' +
+           '*Mis datos*\n' +
+           '• Nombre: ' + name + '\n' +
+           '• Presupuesto: ' + state.moneda + ' ' + budget + '\n' +
+           '• Distritos de interés: ' + districts + '\n' +
+           '• DNI: ' + dni + '\n' +
+           '• Correo: ' + email + '\n\n' +
+           '*Simulación de crédito*\n' +
+           '• Valor del inmueble: ' + f(state.precio) + '\n' +
+           '• Cuota inicial: ' + state.inicialPct + '% (' + f(state.inicialMonto) + ')\n' +
+           '• Plazo: ' + state.plazo + ' años\n' +
+           '• Cuota mensual estimada: ' + f(state.cuota) + '\n\n' +
+           '¡Gracias!';
+  }
+
+  document.getElementById('waSubmit').addEventListener('click', function(){
+    var name      = (fName.value||'').trim();
+    var budget    = (fBudget.value||'').trim();
+    var districts = (fDistricts.value||'').trim();
+    var dni       = (fDni.value||'').trim();
+    var email     = (fEmail.value||'').trim();
+
+    var okName   = name.length >= 2;
+    var okBudget = budget.replace(/[^0-9]/g,'').length >= 3;
+    var okDist   = districts.length >= 2;
+    var okDni    = /^[0-9]{8}$/.test(dni);
+    var okEmail  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    setErr('grpName', !okName);
+    setErr('grpBudget', !okBudget);
+    setErr('grpDistricts', !okDist);
+    setErr('grpDni', !okDni);
+    setErr('grpEmail', !okEmail);
+
+    if(!(okName && okBudget && okDist && okDni && okEmail)){
+      var first = !okName?fName : !okBudget?fBudget : !okDist?fDistricts : !okDni?fDni : fEmail;
+      first.focus();
+      return;
+    }
+
+    var message = buildMessage(name, budget, districts, dni, email);
+
+    // 1) Capturar el lead (si hay endpoint configurado) — no bloquea el WhatsApp
+    if(CONFIG.formEndpoint){
+      try{
+        fetch(CONFIG.formEndpoint, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+          body: JSON.stringify({
+            nombre: name, presupuesto: budget, distritos: districts, dni: dni, correo: email,
+            valor_inmueble: state.precio, moneda: state.moneda,
+            inicial_pct: state.inicialPct, inicial_monto: state.inicialMonto,
+            monto_financiado: state.financiado, plazo_anios: state.plazo,
+            tea: state.tea, cuota_estimada: Math.round(state.cuota),
+            origen: 'Calculadora hipotecaria web'
+          })
+        }).catch(function(){});
+      }catch(err){}
+    }
+
+    // 2) Abrir WhatsApp con el mensaje pre-cargado
+    var waURL = 'https://wa.me/' + CONFIG.whatsappNumber + '?text=' + encodeURIComponent(message);
+    window.open(waURL, '_blank');
+
+    // 3) Estado de éxito con botón (link) de respaldo directo a WhatsApp
+    modalBody.innerHTML =
+      '<div class="msuccess">' +
+        '<div class="chk">✓</div>' +
+        '<h3>¡Gracias, ' + name.split(' ')[0] + '!</h3>' +
+        '<p>Se abrió WhatsApp con tu solicitud lista para enviar. Si no se abrió, toca el botón:</p>' +
+        '<a class="wa-btn" style="margin-top:18px;text-decoration:none" href="' + waURL + '" target="_blank" rel="noopener">' +
+          '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.2-1.7-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.7 1-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.5-.5c.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.2-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1.1 2.8 1.2 3c.2.2 2.1 3.2 5 4.5.7.3 1.3.5 1.7.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3zM12 2a10 10 0 00-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1012 2z"/></svg>' +
+          'Abrir WhatsApp' +
+        '</a>' +
+      '</div>';
+  });
+
+  compute();
+})();
+</script>
+</body>
+</html>

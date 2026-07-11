@@ -24,6 +24,7 @@ export default function Footer() {
           </div>
           <div>
             <span className="fm-label">Contacto</span>
+            <Link href="/planifica">Planifica tu inversión</Link>
             <Link href="/contacto">Formulario</Link>
             <a
               href="https://www.instagram.com/valior/"
