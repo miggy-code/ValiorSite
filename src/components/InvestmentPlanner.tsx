@@ -58,6 +58,60 @@ function payoffMonths(principal: number, rate: number, payment: number, extra: n
   return months;
 }
 
+function paymentWithCosts({
+  propertyValue,
+  downPayment,
+  tea,
+  years,
+  lifeInsurance,
+  propertyInsurance,
+  monthlyFees,
+}: {
+  propertyValue: number;
+  downPayment: number;
+  tea: number;
+  years: number;
+  lifeInsurance: number;
+  propertyInsurance: number;
+  monthlyFees: number;
+}) {
+  const principal = propertyValue * (1 - downPayment / 100);
+  const rate = monthlyRate(tea);
+
+  return (
+    monthlyPayment(principal, rate, years * 12) +
+    principal * (lifeInsurance / 100) +
+    propertyValue * (propertyInsurance / 100) / 12 +
+    monthlyFees
+  );
+}
+
+function balanceTimeline(principal: number, rate: number, payment: number, extra: number) {
+  const points = [{ month: 0, balance: principal }];
+  let balance = principal;
+  let month = 0;
+
+  while (balance > 0.005 && month < 1000) {
+    const capitalPayment = payment - balance * rate + extra;
+    if (capitalPayment <= 0) break;
+
+    balance = Math.max(0, balance - capitalPayment);
+    month += 1;
+
+    if (month % 12 === 0 || balance === 0) {
+      points.push({ month, balance });
+    }
+  }
+
+  const visiblePoints = 6;
+  if (points.length <= visiblePoints) return points;
+
+  return Array.from({ length: visiblePoints }, (_, index) => {
+    const pointIndex = Math.round(index * (points.length - 1) / (visiblePoints - 1));
+    return points[pointIndex];
+  });
+}
+
 export default function InvestmentPlanner() {
   const [activeCalculator, setActiveCalculator] = useState<Calculator>("mortgage");
   const [currency, setCurrency] = useState<Currency>("PEN");
@@ -85,6 +139,40 @@ export default function InvestmentPlanner() {
     firstLifeInsurance +
     monthlyPropertyInsurance +
     numberFrom(monthlyFees);
+  const mortgageTeaValue = numberFrom(mortgageTea);
+  const scenarioInputs = [
+    {
+      label: "Más cauteloso",
+      description: `TEA ${numberFormat.format(mortgageTeaValue + 1.5)}%`,
+      payment: paymentWithCosts({
+        propertyValue: propertyAmount,
+        downPayment,
+        tea: mortgageTeaValue + 1.5,
+        years: mortgageYears,
+        lifeInsurance,
+        propertyInsurance,
+        monthlyFees: numberFrom(monthlyFees),
+      }),
+    },
+    {
+      label: "Tu escenario",
+      description: `${downPayment}% de inicial`,
+      payment: firstMonthlyPayment,
+    },
+    {
+      label: "Más inicial",
+      description: `${Math.min(downPayment + 10, 60)}% de inicial`,
+      payment: paymentWithCosts({
+        propertyValue: propertyAmount,
+        downPayment: Math.min(downPayment + 10, 60),
+        tea: mortgageTeaValue,
+        years: mortgageYears,
+        lifeInsurance,
+        propertyInsurance,
+        monthlyFees: numberFrom(monthlyFees),
+      }),
+    },
+  ];
 
   const debtBalance = numberFrom(balance);
   const amortizationMonths = remainingYears * 12;
@@ -100,10 +188,26 @@ export default function InvestmentPlanner() {
   const remainingPercent = amortizationMonths
     ? Math.max((actualNewTerm / amortizationMonths) * 100, 2)
     : 100;
+  const debtTimeline = balanceTimeline(
+    debtBalance,
+    amortizationRate,
+    normalPayment,
+    extraPayment,
+  );
+  const mortgageSummary = `Crédito hipotecario: inmueble de ${formatMoney(propertyAmount, currency)}, ${downPayment}% de inicial, ${mortgageYears} años, TEA ${mortgageTea}%, cuota estimada ${formatMoney(firstMonthlyPayment, currency)}.`;
+  const amortizationSummary = `Amortización: saldo de ${formatMoney(debtBalance, currency)}, ${remainingYears} años restantes, TEA ${amortizationTea}%, aporte extra mensual de ${formatMoney(extraPayment, currency)}, ahorro estimado de ${formatDuration(savedMonths)}.`;
+  const contactSummary = activeCalculator === "mortgage" ? mortgageSummary : amortizationSummary;
 
   const changeCurrency = (nextCurrency: Currency) => {
     setCurrency(nextCurrency);
     setMonthlyFees(nextCurrency === "USD" ? "3" : "11");
+  };
+
+  const continueToAmortization = () => {
+    setBalance(numberFormat.format(Math.round(financedAmount)));
+    setRemainingYears(mortgageYears);
+    setAmortizationTea(mortgageTea);
+    setActiveCalculator("amortization");
   };
 
   return (
@@ -298,6 +402,24 @@ export default function InvestmentPlanner() {
                 <span>Lectura útil</span>
                 <p>Una inicial mayor reduce tanto la cuota como el interés que pagarás durante toda la vida del crédito.</p>
               </div>
+              <div className="planner-scenarios">
+                <div className="planner-section-heading">
+                  <span>Comparación rápida</span>
+                  <p>Una cuota cambia mucho con una pequeña variación en tu tasa o inicial.</p>
+                </div>
+                <div className="planner-scenario-list">
+                  {scenarioInputs.map((scenario) => (
+                    <div key={scenario.label} className={scenario.label === "Tu escenario" ? "current" : ""}>
+                      <span>{scenario.label}</span>
+                      <strong>{formatMoney(scenario.payment, currency)}</strong>
+                      <small>{scenario.description}</small>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <button type="button" className="planner-flow-button" onClick={continueToAmortization}>
+                Ver este monto en amortización <span aria-hidden="true">→</span>
+              </button>
             </aside>
           </div>
         ) : (
@@ -415,6 +537,21 @@ export default function InvestmentPlanner() {
                   <small>meses menos de deuda</small>
                 </div>
               </div>
+              <div className="planner-balance-path">
+                <div className="planner-section-heading">
+                  <span>Ruta de tu deuda</span>
+                  <p>Saldo estimado si mantienes este aporte extra directo a capital.</p>
+                </div>
+                <div className="planner-balance-bars" role="img" aria-label="Evolución estimada del saldo de la deuda">
+                  {debtTimeline.map((point) => (
+                    <div key={point.month}>
+                      <span>{point.month === 0 ? "Hoy" : `Año ${Math.ceil(point.month / 12)}`}</span>
+                      <i style={{ height: `${debtBalance ? Math.max((point.balance / debtBalance) * 100, 3) : 3}%` }} />
+                      <strong>{formatMoney(point.balance, currency)}</strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
               <div className="planner-result-note">
                 <span>Importante</span>
                 <p>Pide a tu banco una amortización con reducción de plazo. Adelantar cuotas tiene un efecto distinto.</p>
@@ -430,7 +567,9 @@ export default function InvestmentPlanner() {
           </div>
           <div>
             <p>Validamos condiciones reales de financiamiento, revisamos la documentación de la propiedad y trazamos la ruta de tu compra.</p>
-            <Link href="/contacto" className="btn btn-cream">Conversemos</Link>
+            <Link href={`/contacto?summary=${encodeURIComponent(contactSummary)}`} className="btn btn-cream">
+              Revisar esta simulación
+            </Link>
           </div>
         </div>
 

@@ -18,7 +18,7 @@ const founders = [
 
 export default function Nosotros() {
   return (
-    <section className="founders" id="nosotros">
+    <section className="founders" id="nosotros-original">
       <div className="wrap">
         <div className="founders-grid">
           <div className="founders-body reveal">

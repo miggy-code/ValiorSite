@@ -1,33 +1,50 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const services = [
+const servicePillars = [
   {
-    num: "01",
-    cat: "Residencias",
-    title: "Apartamentos de Lujo",
-    desc: "Selección exclusiva en Miraflores, San Isidro y Barranco — propiedades que rara vez llegan al mercado abierto.",
-    img: "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?q=80&w=2400&auto=format&fit=crop",
-    alt: "Apartamento de lujo moderno, luz natural",
-    align: "left",
+    title: "Encontrar con criterio",
+    statement:
+      "Definimos la propiedad correcta antes de empezar a buscarla.",
+    description:
+      "Traducimos tus objetivos de uso, inversión o desarrollo en una búsqueda concreta y bien sustentada.",
+    items: [
+      "Consultoría para la búsqueda de propiedades según el rubro",
+      "Estudio de títulos de propiedad",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2400&auto=format&fit=crop",
+    alt: "Arquitectura contemporánea para inversión inmobiliaria",
   },
   {
-    num: "02",
-    cat: "Inversión",
-    title: "Propiedades de Inversión",
-    desc: "Rentabilidad y plusvalía con asesoría estratégica, respaldada por un análisis profundo del mercado limeño.",
-    img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2400&auto=format&fit=crop",
-    alt: "Torres de vidrio — inversión en Lima",
-    align: "right",
+    title: "Ordenar y proteger",
+    statement:
+      "Resolvemos la situación legal para que el inmueble pueda avanzar.",
+    description:
+      "Revisamos antecedentes, coordinamos el saneamiento y acompañamos cada gestión hasta dejar una base jurídica clara.",
+    items: [
+      "Levantamiento de hipotecas, anotaciones preventivas y otros gravámenes",
+      "División y partición de bienes heredados",
+      "Regularización de predios",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2400&auto=format&fit=crop",
+    alt: "Residencia privada de arquitectura contemporánea",
   },
   {
-    num: "03",
-    cat: "Privado",
-    title: "Casas y Villas",
-    desc: "Residencias privadas para vivir y preservar patrimonio, con la discreción que cada familia merece.",
-    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2400&auto=format&fit=crop",
-    alt: "Villa privada de lujo con piscina",
-    align: "left",
+    title: "Llevar al mercado",
+    statement:
+      "Damos a cada activo una estrategia comercial a su medida.",
+    description:
+      "Preparamos el posicionamiento, la presentación y la gestión comercial según el tipo de inmueble y su audiencia.",
+    items: [
+      "Comercialización de proyectos inmobiliarios",
+      "Comercialización de inmuebles de segundo uso",
+      "Arriendos de corta y larga estancia",
+    ],
+    image:
+      "https://images.unsplash.com/photo-1560448204-603b3fc33ddc?q=80&w=2400&auto=format&fit=crop",
+    alt: "Interior residencial con luz natural",
   },
 ];
 
@@ -35,50 +52,56 @@ export default function Servicios() {
   return (
     <section className="services" id="servicios">
       <div className="wrap">
-        <div className="ed-head reveal">
-          <span className="ed-index">III</span>
-          <div className="ed-htext">
-            <span className="eyebrow">Servicios</span>
-            <h2>
-              Una selección,
-              <br />
-              no un <em>catálogo</em>.
-            </h2>
-            <span className="sub-en">What We Do — A Curated Selection</span>
+        <header className="services-intro reveal">
+          <p>Servicios inmobiliarios</p>
+          <h2>Una mirada completa sobre cada propiedad.</h2>
+          <div className="services-intro-copy">
+            <p>
+              Integramos búsqueda, seguridad jurídica y comercialización para
+              acompañar la operación de principio a fin.
+            </p>
           </div>
-        </div>
-      </div>
-      <div className="srv-panels">
-        {services.map((s, i) => (
-          <article
-            key={s.num}
-            className={`srv-panel reveal${s.align === "right" ? " srv-right" : ""}`}
-          >
-            <Image
-              className="srv-img"
-              src={s.img}
-              alt={s.alt}
-              fill
-              loading={i === 0 ? "eager" : "lazy"}
-              style={{ objectFit: "cover" }}
-            />
-            <div className="srv-overlay" />
-            <div className="srv-content">
-              <div className="srv-text">
-                <div className="srv-meta">
-                  <span className="srv-num">{s.num}</span>
-                  <span className="srv-cat">{s.cat}</span>
-                </div>
-                <h3>{s.title}</h3>
-                <p>{s.desc}</p>
-                <Link href="/contacto" className="srv-link">
-                  Conversemos <span className="arr">→</span>
-                </Link>
+        </header>
+
+        <div className="services-flow">
+          {servicePillars.map((pillar, index) => (
+            <article className="service-chapter reveal" key={pillar.title}>
+              <div className="service-chapter-media">
+                <Image
+                  src={pillar.image}
+                  alt={pillar.alt}
+                  fill
+                  sizes="(max-width: 860px) 100vw, 52vw"
+                  loading="lazy"
+                  className="service-chapter-image"
+                />
               </div>
-              <div className="srv-watermark" aria-hidden="true">{s.num}</div>
-            </div>
-          </article>
-        ))}
+
+              <div className="service-chapter-body">
+                <span className="service-chapter-index" aria-hidden="true">
+                  0{index + 1}
+                </span>
+                <h3>{pillar.title}</h3>
+                <p className="service-chapter-statement">{pillar.statement}</p>
+                <p className="service-chapter-description">
+                  {pillar.description}
+                </p>
+                <ul>
+                  {pillar.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <footer className="services-close reveal">
+          <p>Cuéntanos qué necesitas resolver.</p>
+          <Link href="/contacto" className="tlink">
+            Conversemos <span className="arr">→</span>
+          </Link>
+        </footer>
       </div>
     </section>
   );

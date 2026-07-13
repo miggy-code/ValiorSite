@@ -10,13 +10,19 @@ export const metadata: Metadata = {
     "Solicita una conversación privada con Valior para compra, venta, inversión o asesoría legal inmobiliaria en Lima.",
 };
 
-export default function ContactoPage() {
+export default async function ContactoPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ summary?: string; intent?: string }>;
+}) {
+  const { summary, intent } = await searchParams;
+
   return (
     <>
       <ScrollReveal />
       <Nav tone="dark" />
       <main>
-        <Contacto />
+        <Contacto plannerSummary={summary} intent={intent} />
       </main>
       <Footer />
     </>

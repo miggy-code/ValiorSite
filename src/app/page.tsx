@@ -1,6 +1,5 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
-import Statement from "@/components/Statement";
 import Servicios from "@/components/Servicios";
 import Nosotros from "@/components/Nosotros";
 import HomeCTA from "@/components/HomeCTA";
@@ -15,7 +14,6 @@ export default function Home() {
       <Nav />
       <main className="home-main">
         <Hero />
-        <Statement />
         <Servicios />
         <Nosotros />
         <HomeCTA />

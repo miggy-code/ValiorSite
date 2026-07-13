@@ -19,7 +19,7 @@ export default function Footer() {
             <address>
               Miraflores, Lima, Perú
               <br />
-              +51 999 999 999
+              +51 925 033 657
             </address>
           </div>
           <div>
@@ -34,7 +34,7 @@ export default function Footer() {
               Instagram
             </a>
             <a
-              href="https://wa.me/51999999999"
+              href="https://wa.me/51925033657"
               target="_blank"
               rel="noopener noreferrer"
             >

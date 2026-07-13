@@ -1,73 +1,74 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const principles = [
-  {
-    num: "01",
-    title: "Selección privada",
-    text: "Acceso curado a propiedades excepcionales fuera del mercado masivo.",
-  },
-  {
-    num: "02",
-    title: "Negociación precisa",
-    text: "Estrategia a medida para proteger valor y optimizar cada decisión.",
-  },
-  {
-    num: "03",
-    title: "Respaldo legal",
-    text: "Revisión integral y acompañamiento jurídico en cada etapa.",
-  },
-];
-
 export default function Statement() {
   return (
-    <section className="stmt">
-      <div className="wrap stmt-shell">
-        <div className="stmt-mark reveal">
-          <span>Valior</span>
-          <span>Real estate &amp; legal advisory</span>
-        </div>
-        <div className="stmt-grid">
-          <div className="stmt-copy reveal d1">
-            <h2>
-              <span>Pocas propiedades.</span>
-              <span>Pocos clientes.</span>
-              <em>Ninguna concesión.</em>
+    <section
+      className="about-statement about-statement--page"
+      aria-labelledby="about-statement-title"
+    >
+      <div className="wrap">
+        <header className="about-statement__header reveal">
+          <p className="about-statement__label">Quiénes somos</p>
+          <div>
+            <h2 id="about-statement-title">
+              Más que encontrar una propiedad.
             </h2>
-            <p>
-              Valior acompaña un número limitado de operaciones al año, con
-              criterio inmobiliario y revisión legal desde la primera visita
-              hasta la firma.
+            <p className="about-statement__definition">
+              VALIOR es una comercializadora inmobiliaria y asesoría legal
+              especializada en la compra, venta e inversión de bienes raíces.
             </p>
           </div>
+        </header>
 
-          <div className="stmt-media reveal d1">
-            <div className="stmt-photo">
-              <Image
-                src="https://images.unsplash.com/photo-1600607688969-a5bfcd646154?q=80&w=1600&auto=format&fit=crop"
-                alt="Residencia contemporánea con vista costera en Lima"
-                fill
-                sizes="(max-width: 900px) 92vw, 50vw"
-              />
-            </div>
+        <div className="about-statement__image reveal d1">
+          <Image
+            src="/images/valior-nosotros-concept.png"
+            alt="Las asesoras de VALIOR revisando los planos de una propiedad"
+            fill
+            sizes="(max-width: 860px) 100vw, 82vw"
+          />
+        </div>
+
+        <div className="about-statement__body reveal">
+          <blockquote>
+            Decisiones seguras para proteger y hacer crecer tu patrimonio.
+          </blockquote>
+
+          <div className="about-statement__story">
+            <p>
+              Nacimos porque entendimos que muchas personas necesitan más que
+              encontrar una propiedad. Necesitan una asesoría real,
+              transparente y profesional que les permita decidir con seguridad.
+            </p>
+            <p>
+              Por eso combinamos conocimiento del mercado inmobiliario,
+              estrategias comerciales y respaldo legal. Acompañamos cada etapa
+              con información clara, atención personalizada y expertos a tu
+              lado.
+            </p>
+            <p>
+              Nuestro enfoque va más allá de ofrecer propiedades. Analizamos
+              cada oportunidad, comprendemos cada necesidad y desarrollamos
+              soluciones adaptadas a objetivos concretos.
+            </p>
+            <p>
+              Ya sea encontrar un primer hogar, vender una propiedad o invertir
+              estratégicamente, cuidamos la decisión detrás de cada operación.
+            </p>
           </div>
         </div>
 
-        <div className="stmt-principles reveal d2">
-          {principles.map((principle) => (
-            <article key={principle.title} className="stmt-principle">
-              <span className="stmt-num">{principle.num}</span>
-              <div>
-                <h3>{principle.title}</h3>
-                <p>{principle.text}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        <Link href="/#servicios" className="stmt-link reveal d3">
-          Ver servicios <span aria-hidden="true">→</span>
-        </Link>
+        <footer className="about-statement__close reveal">
+          <p>
+            Cada propiedad representa un esfuerzo, un sueño y una decisión
+            importante. Nuestro propósito es ayudarte a cuidar, construir y
+            hacer crecer tu patrimonio.
+          </p>
+          <Link href="#equipo" className="about-statement__link">
+            Conoce al equipo <span aria-hidden="true">↓</span>
+          </Link>
+        </footer>
       </div>
     </section>
   );
