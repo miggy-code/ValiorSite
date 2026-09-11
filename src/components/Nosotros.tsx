@@ -12,9 +12,10 @@ export default function Nosotros() {
               Madre e hija. Dos oficios, <em>una sola mesa</em>.
             </h2>
             <p>
-              Somos Alessandra y María — agente y abogada. Una encuentra la
-              propiedad; la otra la protege. Cada cliente trabaja con ambas,
-              desde la primera conversación hasta la escritura.
+              Somos un equipo integral: la estrategia comercial y la asesoría
+              jurídica se encuentran para ayudarte a tomar mejores decisiones
+              y proteger tu patrimonio. Alessandra y María acompañan cada
+              operación, desde la primera conversación hasta la escritura.
             </p>
             <Link href="/nosotros" className="tlink">
               Leer nuestra historia <span className="arr">→</span>
