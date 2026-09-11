@@ -1,0 +1,210 @@
+.hero-variants {
+  min-height: 100vh;
+  background: #171310;
+  color: #f2ecdf;
+}
+
+.hero-variants__intro {
+  padding: clamp(36px, 6vw, 82px) var(--gutter);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.hero-variants__intro span,
+.hero-variant__label {
+  font-family: var(--font-jost), sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: var(--tracking-label);
+  text-transform: uppercase;
+}
+
+.hero-variants__intro h1 {
+  max-width: 10ch;
+  margin-top: 22px;
+  font-size: clamp(46px, 7vw, 100px);
+  line-height: 0.92;
+}
+
+.hero-variants__intro p {
+  max-width: 48ch;
+  margin-top: 24px;
+  color: var(--ink-soft);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.hero-variants__list {
+  display: grid;
+  gap: 2px;
+}
+
+.hero-variant {
+  position: relative;
+  min-height: min(86vh, 820px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-variant--a {
+  --hero-sans: var(--variant-sans-a);
+  --hero-serif: var(--variant-serif-a);
+}
+
+.hero-variant--b {
+  --hero-sans: var(--variant-sans-b);
+  --hero-serif: var(--variant-serif-b);
+}
+
+.hero-variant--c {
+  --hero-sans: var(--variant-sans-c);
+  --hero-serif: var(--variant-serif-c);
+}
+
+.hero-variant__image {
+  z-index: -2;
+  object-fit: cover;
+  filter: saturate(0.82) contrast(1.05);
+}
+
+.hero-variant__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(12, 9, 6, 0.84), rgba(12, 9, 6, 0.28) 58%, rgba(12, 9, 6, 0.12)),
+    linear-gradient(0deg, rgba(12, 9, 6, 0.66), transparent 60%);
+}
+
+.hero-variant__label {
+  position: absolute;
+  top: clamp(24px, 4vw, 58px);
+  right: var(--gutter);
+  display: grid;
+  gap: 8px;
+  max-width: 300px;
+  color: rgba(242, 236, 223, 0.68);
+  text-align: right;
+}
+
+.hero-variant__label strong {
+  color: #f2ecdf;
+  font-weight: 500;
+}
+
+.hero-variant__label span {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  text-transform: none;
+}
+
+.hero-variant__content {
+  display: flex;
+  min-height: min(86vh, 820px);
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: clamp(110px, 12vw, 170px) var(--gutter) clamp(38px, 6vw, 80px);
+}
+
+.hero-variant__kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  width: fit-content;
+  color: rgba(242, 236, 223, 0.82);
+  font-family: var(--hero-sans), sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero-variant__kicker::before {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: rgba(242, 236, 223, 0.68);
+}
+
+.hero-variant h2 {
+  max-width: 13ch;
+  margin-top: 22px;
+  color: #fff;
+  font-family: var(--hero-serif), Georgia, serif;
+  font-size: clamp(48px, 7vw, 108px);
+  font-weight: 500;
+  letter-spacing: -0.035em;
+  line-height: 0.93;
+}
+
+.hero-variant h2 em {
+  color: #e6d3a8;
+}
+
+.hero-variant p {
+  max-width: 50ch;
+  margin-top: 24px;
+  color: rgba(242, 236, 223, 0.8);
+  font-family: var(--hero-sans), sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.hero-variant__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.hero-variant__actions a {
+  padding: 15px 20px;
+  border: 1px solid rgba(242, 236, 223, 0.7);
+  color: #f2ecdf;
+  font-family: var(--hero-sans), sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.hero-variant__actions a:hover {
+  background: #f2ecdf;
+  color: #171310;
+}
+
+.hero-variant--b h2 {
+  letter-spacing: -0.045em;
+}
+
+.hero-variant--c h2 {
+  font-size: clamp(46px, 6.4vw, 96px);
+}
+
+@media (max-width: 700px) {
+  .hero-variant__label {
+    top: 24px;
+    left: var(--gutter);
+    right: auto;
+    text-align: left;
+  }
+
+  .hero-variant__content {
+    padding-top: 180px;
+  }
+
+  .hero-variant h2 {
+    max-width: 10ch;
+    font-size: clamp(45px, 14vw, 74px);
+  }
+
+  .hero-variant__actions {
+    display: grid;
+  }
+
+  .hero-variant__actions a {
+    text-align: center;
+  }
+}

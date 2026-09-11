@@ -1,13 +1,10 @@
 import Image from "next/image";
-import Link from "next/link";
 
 const servicePillars = [
   {
     title: "Encontrar con criterio",
-    statement:
-      "Definimos la propiedad correcta antes de empezar a buscarla.",
     description:
-      "Traducimos tus objetivos de uso, inversión o desarrollo en una búsqueda concreta y bien sustentada.",
+      "Definimos la propiedad correcta y traducimos tus objetivos en una búsqueda concreta, bien sustentada.",
     items: [
       "Consultoría para la búsqueda de propiedades según el rubro",
       "Estudio de títulos de propiedad",
@@ -18,10 +15,8 @@ const servicePillars = [
   },
   {
     title: "Ordenar y proteger",
-    statement:
-      "Resolvemos la situación legal para que el inmueble pueda avanzar.",
     description:
-      "Revisamos antecedentes, coordinamos el saneamiento y acompañamos cada gestión hasta dejar una base jurídica clara.",
+      "Revisamos antecedentes y resolvemos la situación legal para que el inmueble avance sobre una base jurídica clara.",
     items: [
       "Levantamiento de hipotecas, anotaciones preventivas y otros gravámenes",
       "División y partición de bienes heredados",
@@ -33,10 +28,8 @@ const servicePillars = [
   },
   {
     title: "Llevar al mercado",
-    statement:
-      "Damos a cada activo una estrategia comercial a su medida.",
     description:
-      "Preparamos el posicionamiento, la presentación y la gestión comercial según el tipo de inmueble y su audiencia.",
+      "Diseñamos el posicionamiento, la presentación y la gestión comercial según el inmueble y su audiencia.",
     items: [
       "Comercialización de proyectos inmobiliarios",
       "Comercialización de inmuebles de segundo uso",
@@ -82,7 +75,6 @@ export default function Servicios() {
                   0{index + 1}
                 </span>
                 <h3>{pillar.title}</h3>
-                <p className="service-chapter-statement">{pillar.statement}</p>
                 <p className="service-chapter-description">
                   {pillar.description}
                 </p>
@@ -95,13 +87,6 @@ export default function Servicios() {
             </article>
           ))}
         </div>
-
-        <footer className="services-close reveal">
-          <p>Cuéntanos qué necesitas resolver.</p>
-          <Link href="/contacto" className="tlink">
-            Conversemos <span className="arr">→</span>
-          </Link>
-        </footer>
       </div>
     </section>
   );

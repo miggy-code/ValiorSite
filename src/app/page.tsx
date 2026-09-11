@@ -16,8 +16,8 @@ export default function Home() {
         <Hero />
         <Servicios />
         <Nosotros />
-        <HomeCTA />
         <PlanningTeaser />
+        <HomeCTA />
       </main>
       <Footer />
     </>

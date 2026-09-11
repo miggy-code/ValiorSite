@@ -16,18 +16,22 @@ export default function PlanificaPage() {
       <ScrollReveal />
       <Nav tone="dark" />
       <main className="planner-page">
-        <section className="planner-intro">
+        <section
+          className="planner-intro planner-intro--compact"
+          aria-labelledby="planner-intro-title"
+        >
           <div className="wrap">
-            <span className="label label--rule reveal">Planifica tu inversión</span>
             <div className="planner-intro-grid">
-              <h1 className="reveal d1">
-                Números claros para decidir con <em>perspectiva.</em>
-              </h1>
-              <p className="reveal d2">
-                Simula tu compra y explora el efecto de amortizar capital. Una
-                primera lectura para llegar mejor preparado a una conversación
-                con tu banco y con Valior.
-              </p>
+              <div className="reveal">
+                <span className="label label--rule">Planifica tu inversión</span>
+                <h1 id="planner-intro-title">
+                  Una estimación, <em>con tus datos.</em>
+                </h1>
+                <p>
+                  Completa el simulador para explorar tu escenario. Los
+                  resultados son referenciales, no una oferta financiera.
+                </p>
+              </div>
             </div>
           </div>
         </section>

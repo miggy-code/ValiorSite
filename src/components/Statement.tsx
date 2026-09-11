@@ -26,6 +26,7 @@ export default function Statement() {
             src="/images/valior-nosotros-concept.png"
             alt="Las asesoras de VALIOR revisando los planos de una propiedad"
             fill
+            preload
             sizes="(max-width: 860px) 100vw, 82vw"
           />
         </div>
@@ -37,24 +38,14 @@ export default function Statement() {
 
           <div className="about-statement__story">
             <p>
-              Nacimos porque entendimos que muchas personas necesitan más que
-              encontrar una propiedad. Necesitan una asesoría real,
-              transparente y profesional que les permita decidir con seguridad.
+              Nacimos para reunir en una misma mesa lo que una operación
+              inmobiliaria exige: lectura de mercado, estrategia comercial y
+              respaldo legal.
             </p>
             <p>
-              Por eso combinamos conocimiento del mercado inmobiliario,
-              estrategias comerciales y respaldo legal. Acompañamos cada etapa
-              con información clara, atención personalizada y expertos a tu
-              lado.
-            </p>
-            <p>
-              Nuestro enfoque va más allá de ofrecer propiedades. Analizamos
-              cada oportunidad, comprendemos cada necesidad y desarrollamos
-              soluciones adaptadas a objetivos concretos.
-            </p>
-            <p>
-              Ya sea encontrar un primer hogar, vender una propiedad o invertir
-              estratégicamente, cuidamos la decisión detrás de cada operación.
+              Analizamos cada oportunidad y acompañamos la compra, venta o
+              inversión con información clara, atención directa y una solución
+              ajustada al objetivo de cada cliente.
             </p>
           </div>
         </div>

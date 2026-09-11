@@ -25,7 +25,7 @@ export default function Hero() {
       <div className="hero-inner">
         <div className="hero-copy">
           <div className="hero-kicker hero-anim a1">
-            Inmobiliaria boutique &amp; asesoría legal
+            Comercialización inmobiliaria &amp; asesoría legal
           </div>
           <h1 className="hero-anim a1">
             Patrimonio privado en Lima, curado con <em>criterio legal</em>.

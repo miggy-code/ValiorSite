@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 type Currency = "PEN" | "USD";
@@ -127,6 +127,16 @@ export default function InvestmentPlanner() {
   const [amortizationTea, setAmortizationTea] = useState("10.5");
   const [extraPayment, setExtraPayment] = useState(600);
 
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      if (window.location.hash === "#amortizacion") {
+        setActiveCalculator("amortization");
+      }
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   const propertyAmount = numberFrom(propertyValue);
   const mortgageRate = monthlyRate(numberFrom(mortgageTea));
   const financedAmount = propertyAmount * (1 - downPayment / 100);
@@ -215,6 +225,7 @@ export default function InvestmentPlanner() {
       <div className="wrap">
         <div className="planner-tabs reveal" role="tablist" aria-label="Elige una calculadora">
           <button
+            id="credito-hipotecario"
             type="button"
             role="tab"
             aria-selected={activeCalculator === "mortgage"}
@@ -224,6 +235,7 @@ export default function InvestmentPlanner() {
             <span>01</span> Crédito hipotecario
           </button>
           <button
+            id="amortizacion"
             type="button"
             role="tab"
             aria-selected={activeCalculator === "amortization"}
@@ -573,9 +585,15 @@ export default function InvestmentPlanner() {
           </div>
         </div>
 
-        <p className="planner-disclaimer">
-          Resultados referenciales con fines educativos. Las tasas, seguros, costos y condiciones definitivas dependen de la evaluación de cada entidad financiera y de tu contrato. Esta herramienta no constituye una oferta ni asesoría financiera formal.
-        </p>
+        <aside className="planner-disclaimer" aria-label="Aviso del simulador">
+          <strong>Simulador aproximado.</strong>
+          <span>
+            Para conocer las condiciones exactas, acércate al banco de tu
+            preferencia o agenda una asesoría con Valior. Podemos ayudarte a
+            comparar cómo quedaría tu préstamo hipotecario con distintos bancos
+            del país.
+          </span>
+        </aside>
       </div>
     </section>
   );
