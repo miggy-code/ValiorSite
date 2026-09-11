@@ -223,57 +223,60 @@ export default function InvestmentPlanner() {
   return (
     <section className="planner" aria-label="Calculadoras de planificación financiera">
       <div className="wrap">
-        <div className="planner-tabs reveal" role="tablist" aria-label="Elige una calculadora">
-          <button
-            id="credito-hipotecario"
-            type="button"
-            role="tab"
-            aria-selected={activeCalculator === "mortgage"}
-            className={activeCalculator === "mortgage" ? "active" : ""}
-            onClick={() => setActiveCalculator("mortgage")}
-          >
-            <span>01</span> Crédito hipotecario
-          </button>
-          <button
-            id="amortizacion"
-            type="button"
-            role="tab"
-            aria-selected={activeCalculator === "amortization"}
-            className={activeCalculator === "amortization" ? "active" : ""}
-            onClick={() => setActiveCalculator("amortization")}
-          >
-            <span>02</span> Amortización
-          </button>
-        </div>
+        <div className="planner-toolbar">
+          <div className="planner-tabs" role="tablist" aria-label="Elige una calculadora">
+            <button
+              id="credito-hipotecario"
+              type="button"
+              role="tab"
+              aria-controls={activeCalculator === "mortgage" ? "mortgage-panel" : undefined}
+              aria-selected={activeCalculator === "mortgage"}
+              className={activeCalculator === "mortgage" ? "active" : ""}
+              onClick={() => setActiveCalculator("mortgage")}
+            >
+              Crédito hipotecario
+            </button>
+            <button
+              id="amortizacion"
+              type="button"
+              role="tab"
+              aria-controls={activeCalculator === "amortization" ? "amortization-panel" : undefined}
+              aria-selected={activeCalculator === "amortization"}
+              className={activeCalculator === "amortization" ? "active" : ""}
+              onClick={() => setActiveCalculator("amortization")}
+            >
+              Amortización
+            </button>
+          </div>
 
-        <div className="planner-currency reveal d1" role="group" aria-label="Moneda de cálculo">
-          <span>Moneda</span>
-          <button
-            type="button"
-            className={currency === "PEN" ? "active" : ""}
-            aria-pressed={currency === "PEN"}
-            onClick={() => changeCurrency("PEN")}
-          >
-            Soles
-          </button>
-          <button
-            type="button"
-            className={currency === "USD" ? "active" : ""}
-            aria-pressed={currency === "USD"}
-            onClick={() => changeCurrency("USD")}
-          >
-            Dólares
-          </button>
+          <div className="planner-currency" role="group" aria-label="Moneda de cálculo">
+            <span>Moneda</span>
+            <button
+              type="button"
+              className={currency === "PEN" ? "active" : ""}
+              aria-pressed={currency === "PEN"}
+              onClick={() => changeCurrency("PEN")}
+            >
+              Soles
+            </button>
+            <button
+              type="button"
+              className={currency === "USD" ? "active" : ""}
+              aria-pressed={currency === "USD"}
+              onClick={() => changeCurrency("USD")}
+            >
+              Dólares
+            </button>
+          </div>
         </div>
 
         {activeCalculator === "mortgage" ? (
-          <div className="planner-layout" role="tabpanel">
+          <div className="planner-layout planner-layout--mortgage" role="tabpanel" id="mortgage-panel" aria-labelledby="credito-hipotecario">
             <section className="planner-panel reveal d1" aria-labelledby="mortgage-inputs-title">
               <div className="planner-panel-heading">
-                <span className="planner-index">01</span>
                 <div>
                   <span className="planner-kicker">Tu compra</span>
-                  <h2 id="mortgage-inputs-title">Define el punto de partida.</h2>
+                  <h2 id="mortgage-inputs-title">Datos del inmueble</h2>
                 </div>
               </div>
 
@@ -435,13 +438,12 @@ export default function InvestmentPlanner() {
             </aside>
           </div>
         ) : (
-          <div className="planner-layout" role="tabpanel">
+          <div className="planner-layout planner-layout--amortization" role="tabpanel" id="amortization-panel" aria-labelledby="amortizacion">
             <section className="planner-panel reveal d1" aria-labelledby="amortization-inputs-title">
               <div className="planner-panel-heading">
-                <span className="planner-index">02</span>
                 <div>
                   <span className="planner-kicker">Tu deuda hoy</span>
-                  <h2 id="amortization-inputs-title">Haz que cada aporte cuente.</h2>
+                  <h2 id="amortization-inputs-title">Datos de tu crédito</h2>
                 </div>
               </div>
 
@@ -575,12 +577,12 @@ export default function InvestmentPlanner() {
         <div className="planner-close reveal d3">
           <div>
             <span className="label label--rule">Siguiente paso</span>
-            <h2>Convierte la estimación en una decisión bien respaldada.</h2>
+            <h2>Hablemos de tu próxima decisión.</h2>
           </div>
           <div>
-            <p>Validamos condiciones reales de financiamiento, revisamos la documentación de la propiedad y trazamos la ruta de tu compra.</p>
-            <Link href={`/contacto?summary=${encodeURIComponent(contactSummary)}`} className="btn btn-cream">
-              Revisar esta simulación
+            <p>Escríbenos. Revisamos tu escenario, validamos las condiciones reales y trazamos contigo una ruta clara para proteger tu patrimonio.</p>
+            <Link href={`/contacto?summary=${encodeURIComponent(contactSummary)}`} className="btn planner-close__cta">
+              Revisar mi escenario
             </Link>
           </div>
         </div>

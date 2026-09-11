@@ -1,0 +1,748 @@
+/* A compact, solid-surface calculator using Valior's existing Manrope type.
+   Layout 3/10, motion 2/10, density 5/10. Controls use a 6px radius;
+   the calculator and its data sections keep straight edges. */
+.page {
+  --paper: #f5f5f1;
+  --paper-2: #eaece5;
+  --ink: #252922;
+  --ink-soft: #60665b;
+  --line: #d4d8ce;
+  --brass: #796336;
+  --dark: #252922;
+  --dark-2: #252922;
+  --cream: #f7f8f3;
+  --cream-soft: #c6cbbf;
+  --line-dark: #454b3f;
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 400;
+  color-scheme: light;
+}
+
+.page :global(.wrap) {
+  max-width: 1370px;
+}
+
+.page :global(header.nav),
+.page :global(header.nav.scrolled) {
+  padding-block: 18px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  backdrop-filter: none;
+}
+
+.page :global(.nav-links a[href="/planifica"]) {
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 7px;
+}
+
+.page :global(.mobile-nav:not(.open)) {
+  visibility: hidden;
+}
+
+.page :global(.footer-mark) {
+  font-size: clamp(46px, 11vw, 190px);
+}
+
+.page :global(.footer-bottom) {
+  color: var(--cream-soft);
+}
+
+.intro {
+  padding-block: 114px 32px;
+}
+
+.eyebrow {
+  margin-bottom: 12px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.intro h1 {
+  font-family: var(--font-jost), sans-serif;
+  font-size: clamp(32px, 3.3vw, 46px);
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.05em;
+  text-wrap: balance;
+}
+
+.description {
+  max-width: 76ch;
+  margin-top: 14px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.page :global(.planner) {
+  padding-bottom: 56px;
+}
+
+.page :global(.planner)::before,
+.page :global(.planner)::after,
+.page :global(.planner-result-hero)::after {
+  display: none;
+  content: none;
+}
+
+.page :global(.planner-toolbar) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 18px;
+}
+
+.page :global(.planner-tabs) {
+  padding: 4px;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper-2);
+}
+
+.page :global(.planner-tabs button) {
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 5px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.page :global(.planner-tabs button:hover) {
+  color: var(--ink);
+  background: #e0e4d8;
+}
+
+.page :global(.planner-tabs button.active) {
+  color: var(--cream);
+  background: var(--ink);
+}
+
+.page :global(.planner-currency) {
+  gap: 4px;
+  padding: 0;
+}
+
+.page :global(.planner-currency > span) {
+  margin-right: 10px;
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.page :global(.planner-currency button) {
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 5px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.page :global(.planner-currency button.active) {
+  border-color: var(--line);
+  background: #fcfdf9;
+  color: var(--ink);
+}
+
+.page :global(.planner-layout) {
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  align-items: stretch;
+  border-color: var(--line);
+  box-shadow: none;
+}
+
+.page :global(.planner-panel),
+.page :global(.planner-layout--amortization .planner-panel) {
+  min-width: 0;
+  padding: 30px 32px;
+  background: #fcfdf9;
+  backdrop-filter: none;
+}
+
+.page :global(.planner-panel-heading) {
+  display: block;
+  margin-bottom: 24px;
+}
+
+.page :global(.planner-kicker) {
+  margin-bottom: 8px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.4;
+  text-transform: none;
+}
+
+.page :global(.planner-panel-heading h2) {
+  max-width: none;
+  font-family: var(--font-jost), sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+}
+
+.page :global(.planner-field) {
+  padding: 18px 0;
+  border: 0;
+}
+
+.page :global(.planner-panel-heading + .planner-field) {
+  padding-top: 0;
+}
+
+.page :global(.planner-field label),
+.page :global(.planner-field-line output) {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.page :global(.planner-field-line output) {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.page :global(.planner-input-money),
+.page :global(.planner-input-suffix) {
+  min-height: 54px;
+  margin-top: 8px;
+  padding-inline: 14px;
+  border: 1px solid #c8cec0;
+  border-radius: 6px;
+  background: var(--paper);
+}
+
+.page :global(.planner-input-money:focus-within),
+.page :global(.planner-input-suffix:focus-within) {
+  border-color: var(--ink);
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.page :global(.planner-input-money input),
+.page :global(.planner-input-suffix input),
+.page :global(.planner-input-money span),
+.page :global(.planner-details-grid input) {
+  min-width: 0;
+  font-family: var(--font-jost), sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.025em;
+  line-height: 1.5;
+}
+
+.page :global(.planner-input-money span) {
+  color: var(--ink-soft);
+  font-size: 16px;
+}
+
+.page :global(.planner-input-money input:focus-visible),
+.page :global(.planner-input-suffix input:focus-visible) {
+  outline: 0;
+}
+
+.page :global(.planner-range) {
+  height: 24px;
+  margin-top: 12px;
+}
+
+.page :global(.planner-range::-webkit-slider-runnable-track) {
+  height: 4px;
+  border-radius: 2px;
+  background: #d4d9cb;
+}
+
+.page :global(.planner-range::-moz-range-track) {
+  height: 4px;
+  border-radius: 2px;
+  background: #d4d9cb;
+}
+
+.page :global(.planner-range::-webkit-slider-thumb) {
+  width: 18px;
+  height: 18px;
+  margin-top: -7px;
+  border: 3px solid #fcfdf9;
+  background: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+.page :global(.planner-range::-moz-range-thumb) {
+  width: 12px;
+  height: 12px;
+  border: 3px solid #fcfdf9;
+  background: var(--ink);
+  box-shadow: 0 0 0 1px var(--ink);
+}
+
+.page :global(.planner-field--highlight) {
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--paper-2);
+}
+
+.page :global(.planner-field > p),
+.page :global(.planner-scale) {
+  font-size: 11px;
+  line-height: 1.65;
+  letter-spacing: 0;
+}
+
+.page :global(.planner-details) {
+  margin-top: 8px;
+  padding-top: 20px;
+}
+
+.page :global(.planner-details summary) {
+  min-height: 32px;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.page :global(.planner-details-grid input) {
+  font-size: 18px;
+}
+
+.page :global(.planner-results) {
+  min-width: 0;
+  background: var(--dark);
+}
+
+.page :global(.planner-result-hero) {
+  min-height: 0;
+  padding: 30px 32px 26px;
+  border-bottom: 1px solid var(--line-dark);
+  background: var(--dark);
+}
+
+.page :global(.planner-result-hero > span),
+.page :global(.planner-result-note > span),
+.page :global(.planner-section-heading > span) {
+  color: var(--cream-soft);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.page :global(.planner-result-hero strong) {
+  max-width: none;
+  margin-block: 12px;
+  font-family: var(--font-jost), sans-serif;
+  font-size: clamp(38px, 4vw, 54px);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.15;
+  letter-spacing: -0.05em;
+  text-wrap: pretty;
+}
+
+.page :global(.planner-layout--amortization .planner-result-hero strong) {
+  max-width: 19ch;
+  font-size: clamp(28px, 2.7vw, 38px);
+  line-height: 1.2;
+}
+
+.page :global(.planner-result-hero p),
+.page :global(.planner-result-note p),
+.page :global(.planner-section-heading > p) {
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.page :global(.planner-result-grid > div) {
+  min-height: 108px;
+  padding: 22px 28px;
+}
+
+.page :global(.planner-result-grid span),
+.page :global(.planner-scenario-list span) {
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.page :global(.planner-result-grid strong),
+.page :global(.planner-scenario-list strong),
+.page :global(.planner-timeline-label strong) {
+  font-family: var(--font-jost), sans-serif;
+  font-size: clamp(20px, 1.9vw, 28px);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.3;
+  letter-spacing: -0.03em;
+}
+
+.page :global(.planner-result-grid small),
+.page :global(.planner-scenario-list small) {
+  color: var(--cream-soft);
+  font-size: 10px;
+  line-height: 1.6;
+}
+
+.page :global(.planner-result-note),
+.page :global(.planner-scenarios),
+.page :global(.planner-balance-path) {
+  padding: 22px 32px;
+}
+
+.page :global(.planner-scenario-list) {
+  gap: 8px;
+  margin-top: 18px;
+  background: transparent;
+}
+
+.page :global(.planner-scenario-list > div) {
+  min-width: 0;
+  min-height: 108px;
+  padding: 14px 10px;
+  border: 1px solid var(--line-dark);
+  border-radius: 6px;
+}
+
+.page :global(.planner-scenario-list > div.current) {
+  border-color: #909b7d;
+  background: #394032;
+}
+
+.page :global(.planner-scenario-list strong) {
+  font-size: clamp(17px, 1.55vw, 23px);
+}
+
+.page :global(.planner-flow-button) {
+  min-height: 60px;
+  padding: 18px 32px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.page :global(.planner-flow-button span) {
+  color: var(--cream);
+}
+
+.page :global(.planner-timeline) {
+  padding: 22px 32px 0;
+}
+
+.page :global(.planner-timeline-label strong) {
+  font-size: 13px;
+}
+
+.page :global(.planner-timeline-bar .reduced),
+.page :global(.planner-timeline > p i),
+.page :global(.planner-balance-bars i) {
+  background: #b5c0a2;
+}
+
+.page :global(.planner-timeline-bar .saved) {
+  background: #454b3f;
+}
+
+.page :global(.planner-balance-bars strong) {
+  min-height: 2.8em;
+  overflow: visible;
+  font-size: 9px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  text-overflow: clip;
+  white-space: normal;
+}
+
+.page :global(.planner-close) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-top: 36px;
+  padding: 32px;
+  border: 1px solid var(--line);
+  background: var(--paper-2);
+  box-shadow: none;
+}
+
+.page :global(.planner-close .label) {
+  margin-bottom: 12px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.page :global(.planner-close .label::before) {
+  content: none;
+}
+
+.page :global(.planner-close h2) {
+  max-width: 23ch;
+  font-family: var(--font-jost), sans-serif;
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.035em;
+}
+
+.page :global(.planner-close p) {
+  margin-bottom: 18px;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.page :global(.planner-close__cta) {
+  min-width: 0;
+  min-height: 48px;
+  padding: 12px 20px;
+  border-radius: 6px;
+  color: var(--cream);
+  background: var(--ink);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: none;
+}
+
+.page :global(.planner-close__cta:hover) {
+  border-color: #454b3f;
+  color: var(--cream);
+  background: #454b3f;
+  box-shadow: none;
+}
+
+.page :global(.planner-close__cta::after) {
+  color: var(--cream);
+}
+
+.page :global(.planner-disclaimer) {
+  max-width: none;
+  margin-top: 24px;
+  padding: 0;
+  gap: 20px;
+  background: transparent;
+  font-size: 11px;
+}
+
+.page :global(.planner-disclaimer strong) {
+  font-size: 11px;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.page :global(.planner button:active),
+.page :global(.planner-close__cta:active) {
+  transform: translateY(1px);
+}
+
+.page :global(.planner a:focus-visible),
+.page :global(.planner button:focus-visible),
+.page :global(.planner summary:focus-visible) {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+
+.page :global(.planner-results button:focus-visible) {
+  outline-color: var(--cream);
+  outline-offset: -5px;
+}
+
+@media (max-width: 1023px) {
+  .page :global(.planner-layout) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .page :global(.planner-panel),
+  .page :global(.planner-layout--amortization .planner-panel) {
+    padding: 24px;
+  }
+
+  .page :global(.planner-field-line) {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .page :global(.planner-result-hero),
+  .page :global(.planner-result-note),
+  .page :global(.planner-scenarios),
+  .page :global(.planner-balance-path) {
+    padding: 24px;
+  }
+
+  .page :global(.planner-result-grid > div) {
+    padding: 20px 18px;
+  }
+
+  .page :global(.planner-scenario-list) {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .page :global(.planner-scenario-list > div) {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4px 12px;
+    min-height: 0;
+    align-items: center;
+    padding: 12px;
+  }
+
+  .page :global(.planner-scenario-list strong) {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    margin: 0;
+  }
+
+  .page :global(.planner-details-grid) {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .page :global(.wrap) {
+    padding-inline: 20px;
+  }
+
+  .page :global(header.nav),
+  .page :global(header.nav.scrolled) {
+    padding: 16px 20px;
+  }
+
+  .intro {
+    padding-block: 100px 24px;
+  }
+
+  .intro h1 {
+    max-width: 17ch;
+    font-size: clamp(29px, 7.8vw, 40px);
+    line-height: 1.2;
+  }
+
+  .eyebrow {
+    margin-bottom: 10px;
+    font-size: 11px;
+  }
+
+  .description {
+    margin-top: 12px;
+    font-size: 12px;
+    line-height: 1.75;
+  }
+
+  .page :global(.planner-toolbar) {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .page :global(.planner-tabs) {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+  }
+
+  .page :global(.planner-tabs button) {
+    padding: 10px 8px;
+    font-size: 11px;
+  }
+
+  .page :global(.planner-currency) {
+    justify-content: flex-end;
+  }
+
+  .page :global(.planner-currency > span) {
+    margin-right: auto;
+  }
+
+  .page :global(.planner-layout) {
+    grid-template-columns: 1fr;
+  }
+
+  .page :global(.planner-panel),
+  .page :global(.planner-layout--amortization .planner-panel) {
+    padding: 24px 20px;
+  }
+
+  .page :global(.planner-panel-heading h2) {
+    font-size: 22px;
+  }
+
+  .page :global(.planner-panel-heading) {
+    margin-bottom: 14px;
+  }
+
+  .page :global(.planner-field-line output) {
+    text-align: left;
+  }
+
+  .page :global(.planner-result-hero),
+  .page :global(.planner-result-note),
+  .page :global(.planner-scenarios),
+  .page :global(.planner-balance-path),
+  .page :global(.planner-flow-button) {
+    padding: 24px 20px;
+  }
+
+  .page :global(.planner-result-grid strong) {
+    font-size: 21px;
+  }
+
+  .page :global(.planner-timeline) {
+    padding: 24px 20px 0;
+  }
+
+  .page :global(.planner-close) {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 24px;
+    padding: 24px 20px;
+  }
+
+  .page :global(.planner-close h2) {
+    max-width: 23ch;
+    font-size: 24px;
+  }
+
+  .page :global(.planner-disclaimer) {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html):has(.page) {
+    scroll-behavior: auto;
+  }
+
+  .page *,
+  .page *::before,
+  .page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

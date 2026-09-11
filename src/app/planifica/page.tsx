@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Footer from "@/components/Footer";
 import InvestmentPlanner from "@/components/InvestmentPlanner";
 import Nav from "@/components/Nav";
-import ScrollReveal from "@/components/ScrollReveal";
+import styles from "./planifica.module.css";
 
 export const metadata: Metadata = {
   title: "Planifica tu inversión | Valior",
@@ -12,32 +12,22 @@ export const metadata: Metadata = {
 
 export default function PlanificaPage() {
   return (
-    <>
-      <ScrollReveal />
+    <div className={styles.page}>
       <Nav tone="dark" />
       <main className="planner-page">
-        <section
-          className="planner-intro planner-intro--compact"
-          aria-labelledby="planner-intro-title"
-        >
+        <section className={styles.intro} aria-labelledby="planner-intro-title">
           <div className="wrap">
-            <div className="planner-intro-grid">
-              <div className="reveal">
-                <span className="label label--rule">Planifica tu inversión</span>
-                <h1 id="planner-intro-title">
-                  Una estimación, <em>con tus datos.</em>
-                </h1>
-                <p>
-                  Completa el simulador para explorar tu escenario. Los
-                  resultados son referenciales, no una oferta financiera.
-                </p>
-              </div>
-            </div>
+            <p className={styles.eyebrow}>Planifica tu inversión</p>
+            <h1 id="planner-intro-title">Tu crédito, en números.</h1>
+            <p className={styles.description}>
+              Completa el simulador para explorar tu escenario. Los resultados
+              son referenciales, no una oferta financiera.
+            </p>
           </div>
         </section>
         <InvestmentPlanner />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
