@@ -587,15 +587,6 @@ export default function InvestmentPlanner() {
           </div>
         </div>
 
-        <aside className="planner-disclaimer" aria-label="Aviso del simulador">
-          <strong>Simulador aproximado.</strong>
-          <span>
-            Para conocer las condiciones exactas, acércate al banco de tu
-            preferencia o agenda una asesoría con Valior. Podemos ayudarte a
-            comparar cómo quedaría tu préstamo hipotecario con distintos bancos
-            del país.
-          </span>
-        </aside>
       </div>
     </section>
   );
